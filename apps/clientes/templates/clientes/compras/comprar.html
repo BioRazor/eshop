@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	Comprar - {{ producto.nombre }}
+{% endblock titulo %}
+
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Comprar {{ producto.nombre }}</h2>
+				<div class="alert alert-info">
+					<strong>
+						Primero proporcionarás datos sobre la compra, y luego, se te indicarán los datos para realizar el pago.
+					</strong>
+				</div>
+				<table class="shopping-cart">
+					<!-- Shopping Cart Item -->
+					<tr>
+						<!-- Shopping Cart Item Image -->
+						<td class="image"><a href=""><img src="{{ producto.Comercio.foto_perfil.url }}" alt="Item Name"></a></td>
+						<!-- Shopping Cart Item Description & Features -->
+						<td>							
+							<h4><a href="">{{ producto.Comercio.nombre }}</a></h4>
+							<p>0{{ producto.Comercio.get_tlf }}</p>					
+							<p>{{ producto.Comercio.usuario.email }}</p>
+						</td>
+						<td>
+							<h4>Ventas Concretadas</h4>
+							<p>130</p>
+						</td>					
+						<td>
+							<h4>Puntaje</h4>
+							<p>5/5</p>
+						</td>
+					</tr>					
+				</table>
+				<table class="shopping-cart">
+					<!-- Shopping Cart Item -->
+					<tr>
+						<!-- Shopping Cart Item Image -->
+						<td class="image"><a href="{% url 'comerce_app:VerProducto' producto.id %}"><img src="{{ productoFotos.foto0.url }}" alt="Item Name"></a></td>
+						<!-- Shopping Cart Item Description & Features -->
+						<td>
+							<div class="cart-item-title">
+								<h4><a href="{% url 'comerce_app:VerProducto' producto.id %}">{{ producto.nombre }}</a></h4>
+							</div>
+							<div class="feature">
+								<p>
+									{{ producto.descripcion_corta }}
+								</p>
+							</div>
+						</td>
+						<!-- Shopping Cart Item Quantity 
+						<td class="quantity">
+							<input class="form-control input-sm input-micro" type="text" value="1">
+						</td>
+						-->						
+						<td class="price" colspan="2">{{ producto.precio }} Bs.</td>
+						<td class="actions">
+							<a href="{% url 'comerce_app:VerProducto' producto.id %}" class="btn btn-xs btn-grey"><i class="glyphicon glyphicon-arrow-left"></i> Volver</a>
+						</td>
+					</tr>					
+				</table>
+				<div class="basic-login">
+					<form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data">
+						{% csrf_token %}
+						<div align="center">
+							<h2>Datos para la Compra</h2>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-5">
+
+									<div class="form-group">
+										<h3>Detalles de la Compra</h3>
+										<label>¿Cuantos quieres?</label>
+										{{ CompraForm.cantidad }}
+										<span id="helpBlock" class="help-block">Existencia: {{ producto.stock }}</span>
+										{{ CompraForm.cantidad.errors }}
+										{% for error in CompraForm.non_field_errors %}
+									      <div class="alert alert-danger">
+									      	{{ error }}
+									      </div>
+									    {% endfor %}
+									</div>
+
+									<div class="form-group">
+										<label>Tipo de Entrega:</label>
+										{{ CompraForm.tipo_entrega }}
+										{{ CompraForm.tipo_entrega.errors }}
+									</div>
+									<div class="form-group">
+										<label>Detalles:</label>
+										<span id="helpBlock" class="help-block">Puedes agregar algun detalle adicional sobre el producto o el envío.</span>
+										{{ EnvioForm.detalles }}
+										{{ EnvioForm.detalles.errors }}
+									</div>
+
+								</div>
+								<div class="col-md-5 col-md-offset-1">
+									<div class="form-group">
+
+										<h3>Detalles de Envío</h3>
+										<div class="alert alert-info">
+											<p>Dejalo vacío si la entrega es personal</p>
+										</div>
+										<label>¿Cual agencia prefieres?</label>
+										{{ EnvioForm.agencia }}
+										{{ EnvioForm.agencia.errors }}
+
+										<label>Dirección:</label>
+										<span id="helpBlock" class="help-block">Dejalo vacío si quieres que lo envien a la dirección con la que te registraste.</span>
+										{{ EnvioForm.direccion }}
+										{{ EnvioForm.direccion.errors }}
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div align="center">
+							<a href="{% url 'comerce_app:VerProducto' producto.id %}" class="btn btn-lg"><i class="glyphicon glyphicon-arrow-left"></i> Volver</a>
+							<button class="btn btn-lg" type="submit">Siguiente <span class="glyphicon glyphicon-chevron-right"></span></button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock cuerpo %}
+
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}
+

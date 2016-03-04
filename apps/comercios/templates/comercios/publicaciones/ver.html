@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% comment %}
+	Se extiende del archivo "base".html
+{% endcomment %}
+
+{% block titulo %}
+	{{ publicacion.titulo }}
+{% endblock titulo %}
+
+{% block cuerpo %}
+	{% comment %}
+		Se incluye la barra de navegacion
+	{% endcomment %}
+	{% include "navbar_administrativo.html" %}
+	{% if user.comercio %}
+		{% include "comercios/navsuperior.html" %}				
+	{% endif %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				{% comment %}
+					Si el usuario es de tipo comercio se incluye la barra de navegacion para comercios
+				{% endcomment %}
+				{% if not publicacion.activo %}
+				<div class="alert alert-danger">
+					<strong>¡Publicación Inactiva!</strong>
+					<form role="form" method="POST" action="{% url 'comerce_app:HabilitarPublicacion' publicacion.id %}"> {% csrf_token %}
+					<button class="btn btn-danger" type="submit">Habilitar</button>
+				</div>
+			{% endif %}	
+				<div class="blog-post blog-single-post">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="comment-author">
+								<table class="tab-pane">
+									<tr>
+										<td class="image">
+											<img src="{{ publicacion.comercio.foto_perfil.url }}" width="100">
+										</td>
+										<td>
+											<h3><a href="{% url 'comerce_app:VerComercio' publicacion.comercio.id %}">{{ publicacion.comercio.nombre }}</a></h3>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="single-post-title">
+								<h3>{{ publicacion.titulo }}</h3>
+							</div>
+						</div>
+						{% if user.comercio %}
+							<div class="col-md-6">
+								<div class="actions">
+									<a href="{% url 'comerce_app:EditarPublicacion' publicacion.id %}" class="btn btn-warning btn-md"><i class="icon-shopping-cart icon-white"></i> <span class="glyphicon glyphicon-pencil"></span> </a>
+									<a href="{% url 'comerce_app:EliminarPublicacion' publicacion.id %}" class="btn btn-danger btn-md"><i class="icon-shopping-cart icon-white"></i> <span class="glyphicon glyphicon-trash"></span> </a>
+								</div>
+							</div>
+						{% endif %}
+					</div>
+					<div class="single-post-info">
+						<i class="glyphicon glyphicon-time"></i>{{ publicacion.fecha_pub|timesince }} <i class="glyphicon glyphicon-comment"></i>{{ comentarios.count }}
+					</div>
+					<div class="single-post-content">
+						{{ publicacion.contenido|safe }}
+					</div>
+					<div class="post-commnets">
+						{% comment %}
+							Seccion de Comentarios. Se recorren todos los comentarios de la publicacion
+						{% endcomment %}
+						<h3>Comentarios ({{ comentarios.count }})</h3>
+						{% for comentario in comentarios %}
+							<div class="post-coments">
+								<ul class="post-comments">
+									<li>
+										<div class="comment-wrapper">											
+											{% if comentario.usuario.cliente %}
+												<div class="comment-author"><img src="{{ comentario.usuario.cliente.foto_perfil.url }}" alt="User Name"> {{ comentario.usuario.cliente.nombre }}
+											{% else %}
+												<div class="comment-author"><img src="{{ comentario.usuario.comercio.foto_perfil.url }}" alt="User Name"> {{ comentario.usuario.comercio.nombre }}
+											{% endif %}
+												</div>
+											<p>
+												{{ comentario.comentario }}
+											</p>
+											<!-- Comment Controls -->
+											<div class="comment-actions">
+												{% comment %}
+													si el comentario mostrado corresponde al usuario logeado, se muesta la opcion para eliminarle.
+												{% endcomment %}
+												{% if comentario.usuario == user %}
+													<form method="POST" action="{% url 'comerce_app:EliminarComentario' comentario.id publicacion.id %}">
+														{% csrf_token %}
+														<button class="btn btn-xs pull-left" type="submit">Eliminar</button>
+													</form>
+												{% endif %}
+												<span class="comment-date">{{ comentario.fecha_pub }}, hace {{ comentario.fecha_pub|timesince }}</span>
+											</div>
+										</div>
+									</li>								
+							</div>
+						{% empty %}
+							<p>Ningun comentario por ahora... ¡Comenta!</p>
+						{% endfor %}
+						<div class="single-post-info">
+						</div>
+						<!-- Comments Form -->
+						<h3>Deja un Comentario</h3>
+						<div class="comment-form-wrapper">
+							<form method="POST" action="{% url 'comerce_app:ComentarPublicacion' publicacion.id  %}">
+								{% csrf_token %}
+		        				<div class="form-group">
+		        				 	<div class="comment-author">
+		        				 		{% if user.comercio %}
+		        				 			<img src="{{ user.comercio.foto_perfil.url }}" alt="User Name">{{ user.comercio.nombre }}
+		        				 		{% elif user.cliente %}
+		        				 			<img src="{{ user.cliente.foto_perfil.url }}" alt="User Name">{{ user.cliente.nombre }}
+		        				 		{% endif %}
+		        				 	</div>											
+									<p>{{ user.email }}</p>
+								</div>
+								<div class="form-group">
+									<label for="comment-message"><i class="glyphicon glyphicon-comment"></i> <b>Comentario:</b></label>
+									{{ ComentarioForm.comentario }}
+								</div>
+								<div class="form-group">
+									{% if user.is_authenticated %}
+										<button type="submit" class="btn btn-large pull-right">Comentar</button>
+									{% else %}
+										<a class="btn pull-right" href="{% url 'principal:login' %}">Debes entrar para comentar</a>
+									{% endif %}
+		        					<a class="btn pull-left" href="{% url 'comerce_app:ListarPublicaciones' %}">Volver</a>
+								</div>
+								<div class="clearfix"></div>
+		        			</form>
+						</div>
+						<!-- End Comment Form -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock cuerpo %}
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

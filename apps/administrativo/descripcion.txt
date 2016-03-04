@@ -1,0 +1,11 @@
+La app administrativo contiene todo lo referente, y concerniente al rol administrativo explicado en el proyecto.
+
+Contiene:
+	-Modelo Usuario
+	-Modelo Agencia de Envío
+	-Modelo Parroquia
+	-Modelo Área de Interés
+	-Modelo Factura
+
+Cabe destacar, que las clases Cliente y comercio se asocian al modelo Usuario para hacer uso del sistema, pero
+que el administrador, hace uso directamente del modelo usuario, como Staff o como SuperUsuario.

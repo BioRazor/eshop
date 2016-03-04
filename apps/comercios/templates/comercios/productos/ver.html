@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+{% block titulo %}
+	{{ producto.nombre }}
+{% endblock titulo %}
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+	{% if user.comercio %}
+		{% include "comercios/navsuperior.html" %}				
+	{% endif %}
+	<div class="container">
+		<div class="col-md-12">	
+			{% comment %}
+				si el usuario logeado es un comercio, se muestra la barra de navegacion para comercios	
+			{% endcomment %}		
+			<div class="comment-author">
+				<table class="shopping-cart">
+					<tr>
+						<td class="image">
+							<img src="{{ producto.Comercio.foto_perfil.url }}" width="100">
+						</td>
+						<td>
+							<h3><a href="{% url 'comerce_app:VerComercio' producto.Comercio.id %}">{{ producto.Comercio.nombre }}</a></h3>
+							<h4>{{ producto.Comercio.rif }}</h4>
+							<h4>0{{ producto.Comercio.get_tlf }}</h4>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<h2>Datos del Producto</h2>
+			{% if not producto.activo %}
+				<div class="alert alert-danger">
+					<strong>¡Producto Inactivo!</strong>
+					<form role="form" method="POST" action="{% url 'comerce_app:HabilitarProducto' producto.id %}"> {% csrf_token %}
+					<button class="btn btn-danger" type="submit">Habilitar</button>
+				</div>
+			{% endif %}	
+			{% if opinionForm %}
+				<div class="alert alert-success">
+					Has comprado y recibido el producto. Ahora puedes valorarlo.
+					{% include "clientes/compras/modal-valorar-producto.html" %}
+				</div>									
+			{% endif %}		        
+	        <div class="section">
+		    	
+		    		<div class="row">
+		    			<!-- Product Image & Available Colors -->
+		    			<div class="col-sm-6">
+		    				<div class="product-image-large">
+		    					<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+									<!-- Indicators -->
+									<ol class="carousel-indicators">
+										<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+										<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+										<lidata-target="#carousel-example-generic" data-slide-to="2"></li>
+											<li data-target="#carousel-example-generic" data-slide-to="3"></li>
+									</ol>
+
+									<!-- Wrapper for slides -->
+									<div class="carousel-inner" role="listbox">
+										<div class="item active">
+											 <img src="{{ fotos.foto0.url }}" alt="{{ producto.nombre }}" height="480" width="480">
+										</div>
+										<div class="item">
+											 <img src="{{ fotos.foto1.url }}" alt="{{ producto.nombre }}" height="480" width="480">
+										</div>
+										<div class="item">
+											 <img src="{{ fotos.foto2.url }}" alt="{{ producto.nombre }}" height="480" width="480">
+										</div>
+										<div class="item">
+											 <img src="{{ fotos.foto3.url }}" alt="{{ producto.nombre }}" height="480" width="480">
+										</div>
+									</div>
+
+									<!-- Controls -->
+									<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+											<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+											<span class="sr-only">Previous</span>
+									</a>
+									<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+											<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+											<span class="sr-only">Next</span>
+									</a>
+								</div>
+		    				</div>		    				
+		    			</div>
+		    			<!-- End Product Image & Available Colors -->
+		    			<!-- Product Summary & Options -->
+		    			<div class="col-sm-6 product-details">
+		    				<h1>{{ producto.nombre }}</h1>
+		    				<div class="price">
+								<!-- <span class="price-was">$959.99</span>--> {{ producto.precio }}Bs
+							</div>
+							<h3>Descripción Corta</h3>
+		    				<p>
+		    					{{ producto.descripcion_corta }}
+		    				</p>
+		    				{% comment %}
+		    					Si el usuario es un comercio y el producto pertenece a este, se muestran los botones 
+		    					de eliminacion y edicion		    					
+		    				{% endcomment %}
+		    				{% if user.comercio and producto.Comercio == user.comercio %}
+			    				<div class="actions">
+										<a href="{% url 'comerce_app:EditarProducto' producto.id %}" class="btn btn-warning btn-md"><i class="icon-shopping-cart icon-white"></i> <span class="glyphicon glyphicon-pencil"></span> </a>
+										<a href="{% url 'comerce_app:EliminarProducto' producto.id %}" class="btn btn-danger btn-md"><i class="icon-shopping-cart icon-white"></i> <span class="glyphicon glyphicon-trash"></span> </a>
+								</div>		    					
+		    				{% endif %}
+		    				{% comment %}
+		    					Si el usuario es un cliente se muestra el boton de comprar
+		    				{% endcomment %}
+		    				{% if user.is_authenticated and user.cliente %}
+		    					<div class="actions">
+									<a href="{% url 'client_app:ComprarProducto' producto.id %}" class="btn btn-warning btn-md"><i class="icon-shopping-cart icon-white"></i> <span class="glyphicon glyphicon-shopping-cart"></span> Comprar</a>							
+								</div>
+								{% else %}
+									<a href="{% url 'principal:login' %}" class="btn btn-warning btn-md"><i class="icon-shopping-cart icon-white"></i> Entra o Registrate para Comprar</a>
+		    				{% endif %}
+
+		    			</div>
+		    			<!-- End Product Summary & Options -->
+		    			
+		    			<!-- Full Description & Specification -->
+		    			<div class="col-sm-12">
+
+		    				<div class="tabbable">
+		    					<!-- Tabs -->
+								<ul class="nav nav-tabs product-details-nav">
+									<li class="active"><a href="#tab1" data-toggle="tab">Descripcion</a></li>
+									<li><a href="#especificaciones" data-toggle="tab">Especificaciones</a></li>
+									<li><a href="#opiniones" data-toggle="tab">Opiniones y Puntajes ({{ opiniones.count }})</a></li>
+								</ul>
+								<!-- Tab Content (Full Description) -->
+								<div class="tab-content product-detail-info">
+									<div class="tab-pane active" id="tab1">
+										{{ producto.media }}
+										{{ producto.descripcion|safe }}
+									</div>
+									<!-- Tab Content (Specification) -->
+									<div class="tab-pane" id="especificaciones">
+										<table>
+											<tr>
+												<td>Peso</td>
+												<td>{{ producto.peso }}Kg.</td>
+											</tr>
+											<tr>
+												<td>Altura</td>
+												<td>{{ producto.alto }}</td>
+											</tr>
+											<tr>
+												<td>Ancho</td>
+												<td>{{ producto.ancho }}</td>
+											</tr>
+											<tr>
+												<td>Largo</td>
+												<td>{{ producto.largo }}</td>
+											</tr>
+											<tr>
+												<td>Existencia Actual</td>
+												<td>{{ producto.stock }}</td>
+											</tr>
+											<tr>
+												<td>Visitas</td>
+												<td>{{ producto.visitas }}</td>
+											</tr>
+										</table>
+									</div>
+									<div class="tab-pane" id="opiniones">
+										<h4>Opiniones de Clientes que compraron el producto.</h4>
+										{% if opiniones %}
+											<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+												{% for opinion in opiniones %}
+												  <div class="panel panel-default">
+
+												    <div class="panel-heading" role="tab" id="{{ opinion.id }}">
+												      <h4 class="panel-title">
+												        <a {% if forloop.counter0 == 1 %}class="collapsed"{% endif %} role="button" data-toggle="collapse" data-parent="#accordion" href="#{{ opinion.id|add:1 }}" aria-expanded="{% if forloop.counter0 == 1 %}true {% else %}false{% endif %}" aria-controls="{{ opinion.id|add:1 }}">
+												          Opinion de {{ opinion.cliente.nombre }} {{ opinion.cliente.apellido }}
+												        </a>
+												      </h4>
+												    </div>
+
+												    <div id="{{ opinion.id|add:1 }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="{{ opinion.id }}">
+												      <div class="panel-body">
+												      	<p><b>Puntaje:</b></p>
+												      	{% if opinion.puntaje == 5 %}
+												      		<span class="glyphicon glyphicon-star"></span>
+												      		<span class="glyphicon glyphicon-star"></span>
+												      		<span class="glyphicon glyphicon-star"></span>
+												      		<span class="glyphicon glyphicon-star"></span>
+												      		<span class="glyphicon glyphicon-star"></span>
+												      	{% endif %}
+												      	{% if opinion.puntaje == 4 %}
+												      		<span class="glyphicon glyphicon-star"></span>
+												      		<span class="glyphicon glyphicon-star"></span>
+												      		<span class="glyphicon glyphicon-star"></span>
+												      		<span class="glyphicon glyphicon-star"></span>
+												      	{% endif %}
+												      	{% if opinion.puntaje == 3 %}
+												      		<span class="glyphicon glyphicon-star"></span>
+												      		<span class="glyphicon glyphicon-star"></span>
+												      		<span class="glyphicon glyphicon-star"></span>
+												      	{% endif %}
+												      	{% if opinion.puntaje == 2 %}
+												      		<span class="glyphicon glyphicon-star"></span>
+												      		<span class="glyphicon glyphicon-star"></span>
+												      	{% endif %}
+												      	{% if opinion.puntaje == 1 %}
+												      		<span class="glyphicon glyphicon-star"></span>
+												      	{% endif %}
+												      	<p>
+												      		<b>Opinión:</b>
+													        {{ opinion.opinion }}
+												      	</p>
+												      </div>
+												    </div>
+
+												  </div>
+													
+												{% endfor %}
+
+											</div>
+											{% else %}
+												<div class="alert alert-info">
+													<p>Ninguna Opinion por ahora</p>
+												</div>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+		    			</div>
+		    			<div class="col-md-12">
+		    				<div class="post-commnets">
+								<h3>Preguntas ({{ preguntas.count }})</h3>
+						<div class="single-post-info">
+						</div>
+								{% comment %}
+									Se recorren y muestran las preguntas del producto
+								{% endcomment %}
+								{% for pregunta in preguntas %}
+									<div class="post-coments">
+										<ul class="post-comments">
+											<li>
+												<div class="comment-wrapper">													
+													<div class="comment-author">
+														<img src="{{ pregunta.cliente.foto_perfil.url }}" alt="User Name"> {{ pregunta.cliente.nombre }}
+													</div>
+													<p>
+														{{ pregunta.pregunta }}
+													</p>
+													<!-- Comment Controls -->
+													<div class="comment-actions">
+														<span class="comment-date">{{ pregunta.fecha }}, hace {{ pregunta.fecha|timesince }}</span>
+													</div>
+													{% comment %}
+														Se recorren las respuestas y se muestran las que correspondan a la pregunta realizada por el usuario
+													{% endcomment %}
+													{% for respuesta in respuestas %}
+														{% if respuesta.pregunta.id == pregunta.id %}
+															<div class="post-coments">
+																<ul class="post-comments">
+																	<li>
+																		<div class="comment-wrapper">													
+																			<div class="comment-author">
+																				<img src="{{ respuesta.comercio.foto_perfil.url }}" alt="User Name"> {{ respuesta.comercio.nombre }}
+																				{% if respuesta.comercio == user.comercio %}
+																					<a class="btn btn-sm pull-right" href="">Eliminar</a>
+																					<a class="btn btn-sm pull-right" href="">Editar</a>
+																				{% endif %}
+																			</div>
+																			<p>
+																				{{ respuesta.respuesta }}
+																			</p>
+																			<!-- Comment Controls -->
+																			<div class="comment-actions">
+																				<span class="comment-date">{{ respuesta.fecha }}, hace {{ respuesta.fecha|timesince }}</span>
+																			</div>
+																		</div>
+																	</li>
+																</ul>								
+															</div>
+														{% endif %}
+													{% endfor %} <!--For de respuestas -->
+													{% comment %}
+														Si el usuario es un comercio y el producto corresponte al comercio logeado, este podra responder a las preguntas realizadas
+													{% endcomment %}
+													{% if user.comercio and producto.Comercio == user.comercio %}
+														<div class="comment-wrapper">
+															<form class="form" method="POST" action="{% url 'comerce_app:ResponderProducto' pregunta.id producto.id %}">
+																{% csrf_token %}
+																<h4>Responde la pregunta de <strong>{{ pregunta.cliente.nombre }}</strong></h4>
+																{{ respuestaForm.respuesta }}
+																<br>
+																<button class="btn pull-right">Responder</button>
+															</form>
+														</div>
+													{% endif %}
+
+												</div>
+											</li>
+										</ul>								
+									</div>
+									{% comment %}
+										Se recorren las respuestas realizadas y se muestran las respuestas que correspondan a la pregunta realizada
+									{% endcomment %}
+								{% empty %}
+									<p>Ningun comentario por ahora... ¡Comenta!</p>
+								{% endfor %}<!--for de preguntas-->
+
+								{% comment %}
+									Se valida que unicamente los usuarios puedan hacer preguntas
+								{% endcomment %}
+
+								{% if request.user.cliente %}									
+									<!-- Comments Form -->
+									<h4>Deja un Comentario</h4>
+									<div class="comment-form-wrapper">
+										<form method="POST" action="{% url 'comerce_app:PreguntarProducto' producto.id %}">
+											{% csrf_token %}
+					        				<div class="form-group">
+					        				 	<div class="comment-author">
+					        				 		{% if user.comercio %}
+					        				 			<img src="{{ user.comercio.foto_perfil.url }}" alt="User Name">{{ user.comercio.nombre }}
+					        				 		{% elif user.cliente %}
+					        				 			<img src="{{ user.cliente.foto_perfil.url }}" alt="User Name">{{ user.cliente.nombre }}
+					        				 		{% endif %}
+					        				 	</div>											
+												<p>{{ user.email }}</p>
+											</div>
+											<div class="form-group">
+												<label for="comment-message"><i class="glyphicon glyphicon-comment"></i> <b>Pregunta:</b></label>
+												{{ preguntaForm.pregunta }}
+											</div>
+											<div class="form-group">
+												{% if user.is_authenticated %}
+													<button type="submit" class="btn btn-large pull-right">Preguntar</button>
+												{% else %}
+													<a class="btn pull-right" href="{% url 'principal:login' %}">Debes entrar para preguntar</a>
+												{% endif %}
+					        					<a class="btn pull-left" href="{% url 'comerce_app:ListarPublicaciones' %}">Volver</a>
+											</div>
+											<div class="clearfix"></div>
+					        			</form>
+									</div>
+									<!-- End Comment Form -->
+								{% endif %}
+
+							</div>
+		    			</div>
+		    			<!-- End Full Description & Specification -->
+		    		</div>
+			</div><!--section-->
+		</div>
+	</div>
+{% endblock cuerpo %}
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

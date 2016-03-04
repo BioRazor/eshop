@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	Registro de Comercio - Eshop
+{% endblock titulo %}
+
+{% block cuerpo %}
+{% include "navbar_administrativo.html" %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<form class="form-horizontal" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+					<h1>Registro de Comercio</h1>
+					<h2><span class="glyphicon glyphicon-user"></span> Ingresa tus datos de Usuario</h2>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-5">
+								<div class="form-group">
+									<strong>Nombre de Usuario:</strong>
+									{{ UsuarioForm.username }}
+									{{ UsuarioForm.username.errors }}
+									<p class="help-block">Se distinguirá entre mayúsculas y minúsculas</p>
+								</div>
+							</div>
+							<div class="col-md-5 col-md-offset-1">
+								<div class="form-group">
+									<strong>Correo:</strong>
+									{{ UsuarioForm.email }}
+									{{ UsuarioForm.email.errors }}
+									<p class="help-block">Ingresa el correo de la empresa.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<strong>Contraseña:</strong>
+						{{ UsuarioForm.password }}
+						{{ UsuarioForm.password.errors }}
+						<strong>Escribe de nuevo la Contraseña:</strong>
+						{{ UsuarioForm.passwordCheck }}
+						{{ UsuarioForm.passwordCheck.errors }}
+					</div>
+					<h2><span class="glyphicon glyphicon-shopping-cart"></span> Ingresa los datos de tu Comercio</h2>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-5">
+								<div class="form-group">
+									<strong>Nombre:</strong>
+									{{ ComercioForm.nombre }}
+									{{ ComercioForm.nombre.errors }}
+								</div>
+								<div class="form-group">
+									<strong>Registro Único de Información Fiscal(RIF):</strong>
+									{{ ComercioForm.rif }}
+									{{ ComercioForm.rif.errors }}
+								</div>
+								<div class="form-group">
+									<strong>Dirección:</strong>
+									{{ ComercioForm.direccion }}
+									{{ ComercioForm.direccion.errors }}
+								</div>
+							</div>
+							<div class="col-md-5 col-md-offset-1">
+								<div class="form-group">
+									<strong>Numero Telefónico:</strong>
+									<p>Prefijo:</p>
+									{{ TelefonoForm.prefijo }}
+									{{ TelefonoForm.prefijo.errors }}
+									<p>Teléfono:</p>
+									{{ TelefonoForm.telefono }}
+									{{ TelefonoForm.telefono.errors }}
+								</div>
+								<div class="form-group">
+									<strong>En que parroquia estas?</strong>
+									{{ ComercioForm.parroquia }}
+									{{ ComercioForm.parroquia.errors }}
+								</div>
+								<div class="form-group">
+									<strong>Elige una Foto de Perfil:</strong>
+									{{ ComercioForm.foto_perfil }}
+									{{ ComercioForm.foto_perfil.errors }}
+								</div>
+								<div class="form-group">
+									<strong>Elige una Foto de Portada:</strong>
+									{{ ComercioForm.foto_portada }}
+									{{ ComercioForm.foto_portada.errors }}
+								</div>
+							</div>
+							<div class="col-md-5 col-md-offset-1">
+								<div class="form-group">
+									<label>¿En que áreas te desempeñas?</label>
+									{{ ComercioForm.area_interes }}
+									{{ ComercioForm.area_interes.errors }}
+								</div>
+							</div>
+							<div class="form-group center-block">
+								<button type="submit" class="btn btn-success">
+									<span class="glyphicon glyphicon-log-in"></span> Registrarse
+								</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock cuerpo %}
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	Venta - {{ compra.id }}
+{% endblock titulo %}
+
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+	{% if user.comercio %}
+		{% include "comercios/navsuperior.html" %}				
+	{% endif %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="basic-login">
+					<div align="center">
+						<h1>Datos de la Venta</h1>
+						<table class="shopping-cart">
+							<tr>
+								<td class="image">
+									<div class="comment-author">
+										<img src="{{ compra.cliente.foto_perfil.url }}" alt="{{ compra.cliente.nombre }}" width="90">
+									</div>
+								</td>
+								<td>
+									<h4>{{ compra.cliente.nombre }} {{ compra.cliente.apellido }}</h4>
+									<p>{{ compra.cliente.ci }}</p>
+								</td>
+								<td>
+									<p>{{ compra.fecha_compra|date:"D d M Y" }}</p>
+								</td>
+								<td>
+									<p>{{ compra.fecha_compra|timesince }}</p>
+								</td>
+								<td>
+									<div class="alert alert-info">
+										<strong>{{ compra.estado|capfirst }}</strong>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<!-- Shopping Cart Item Image -->
+								<td class="image">
+									<div class="comment-author">
+										<a href="{% url 'comerce_app:VerProducto' compra.producto.id %}"><img src="{{compra.producto.get_pic }}" alt="Item Name" width="90"></a>
+									</div>
+								</td>
+								<!-- Shopping Cart Item Description & Features -->
+								<td>
+									<div class="cart-item-title">
+										<h4><a href="{% url 'comerce_app:VerProducto' compra.producto.id %}">{{ compra.producto.nombre }}</a></h4>
+									</div>
+									<div class="feature">
+										<p>
+											{{ compra.producto.descripcion_corta }}
+										</p>
+									</div>
+								</td>
+								<!-- Shopping Cart Item Quantity 
+								<td class="quantity">
+									<input class="form-control input-sm input-micro" type="text" value="1">
+								</td>
+								-->
+								<td>
+									{{ compra.cantidad }}
+								</td>				
+								<td>
+									{{ compra.producto.precio }}
+								</td>		
+								<td class="price" colspan="2">
+									<p>A cancelar:</p>
+									{% comment %}
+										Se multiplica el precio del producto por la cantidad comprada
+									{% endcomment %}
+									<p>{% widthratio  compra.producto.precio 1 compra.cantidad %} Bs.</p>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								{% if compra.envio %}
+									<td>
+										<strong>Dirección de envío:</strong>
+										<p>{{ compra.envio.direccion }}</p>
+									</td>
+									<td colspan="2">
+										<strong>Detalles</strong>
+										<p>{{ compra.envio.detalles }}</p>
+									</td>				
+									<td>
+										<strong>Agencia</strong>
+										<p>{{ compra.envio.agencia }}</p>
+									</td>
+								{% else %}					
+									<td>
+										<strong>Retirar por la tienda</strong>
+									</td>
+								{% endif %}
+								{% if compra.envio.fecha_recepcion %}
+									<td>
+										<strong>Retirado el:</strong> {{ compra.envio.fecha_recepcion|date:"D d M Y" }}
+									</td>
+								{% endif %}
+							</tr>
+							<tr>
+								<td colspan="5">
+									{% comment %}
+										Si el cliente ya cancelo se muestra la informacion del pago, si no, se informa al comercio que aun se esta esperando el pago del cliente
+									{% endcomment %}
+									{% if compra.pago %}
+										<p><b>Banco:</b> {{ compra.pago.banco }}</p>
+										<p><b>Cuenta:</b> {{ compra.pago.cuenta }}</p>
+										<p><b>Numero de Referencia:</b> {{ compra.pago.nro_referencia }}</p>
+										<p>
+											<b>Tipo de Pago</b>
+											{% if compra.pago.tipo_pago == 'trans' %}
+												Transferencia
+											{% else %}
+												Deposito
+											{% endif %}
+										</p>
+										<p><b>Fecha de Pago</b> {{ compra.pago.fecha_pago }}</p>
+									{% endif %}
+
+									{% if compra.estado != 'recibido' and not compra.pago %}
+										<div class="alert alert-info">
+											<p>El cliente no ha cancelado aún. Cuando el cliente realize el pago, esta venta se moverá a la sección de "Compras por verificar y enviar".</p>
+										</div>
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<td colspan="5">
+									{% if compra.estado == 'pagado' %}
+										<div align="center">
+											<div class="alert alert-info">
+												<p>Una vez que verifiques en tus cuentas con los datos de pago, que el pago ha sido exitoso. Envia el producto y haz clic en "Verificado y Enviado"</p>
+											</div>
+											<form method="POST" action="{% url 'comerce_app:VerificarEnviar' compra.id %}">
+												{% csrf_token %}
+												<a class="btn" style="color:white" href="{% url 'comerce_app:ListaVentas' %}">Atras</a>
+												<button class="btn" type="submit">Verificado y Enviado</button>
+											</form>
+										</div>											
+									{% endif %}
+									{% if compra.estado == 'enviado' %}						
+										<div class="alert alert-success">
+											<p>Ya has verificado el pago y enviado el producto. Si todo va bien, al cliente le llegará pronto! :)</p>
+										</div>
+										<a class="btn" style="color:white" href="{% url 'comerce_app:ListaVentas' %}">Atras</a>
+									{% endif %}
+									{% if compra.estado == 'recibido' %}
+										<div class="alert alert-success">
+											<strong>El cliente ya ha recibido el producto. ¡Buen trabajo! :)</strong>
+										</div>
+										<a class="btn" style="color:white" href="{% url 'comerce_app:ListaVentas' %}">Atras</a>
+									{% endif %}									
+								</td>
+							</tr>					
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock cuerpo %}
+
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

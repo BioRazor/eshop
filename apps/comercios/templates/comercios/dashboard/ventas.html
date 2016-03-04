@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	Menú {{ user.comercio.nombre }}
+{% endblock titulo %}
+
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+	{% include "comercios/navsuperior.html" %}
+	<div class="container">
+		<div class="row">
+			
+			<div class="col-md-12">
+				{% comment %}
+					Se incluye la barra lateral para comercios
+				{% endcomment %}
+
+				<div class="row">
+
+					<div class="col-md-12">
+						<div class="tabbable">
+							<!-- Tabs -->
+							<ul class="nav nav-tabs product-details-nav">
+								<li class="active"><a href="#espera" data-toggle="tab">En Espera de Pago ({{ comprasProcesar.count }})</a></li>
+								<li><a href="#verificar" data-toggle="tab">Por Verificar y Enviar ({{ comprasEnviar.count }})</a></li>
+								<li><a href="#recepcion" data-toggle="tab">En Espera de Recepción ({{ comprasEnviadas.count }})</a></li>
+								<li><a href="#concretado" data-toggle="tab">Concretadas ({{ comprasListo.count }})</a></li>
+							</ul>
+							<!-- Tab Content (Full Description) -->
+							<div class="tab-content product-detail-info">
+								<div class="tab-pane active" id="espera">
+									<div class="row">
+										<div class="col-md-12">
+											<h2>Compras en espera de Pago ({{ comprasProcesar.count }})</h2>
+											<div class="basic-login">
+												{% if comprasProcesar %}
+													
+													{% for compra in comprasProcesar %}										
+														<table class="shopping-cart">
+															<!-- Shopping Cart Item -->
+															<tr>
+																<td colspan="3">
+																	<div align="center">
+																		<h4>Indentificación Nro: {{ compra.id }}</h3>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<!-- Shopping Cart Item Image -->
+																<td class="image">
+																	<div class="comment-author">
+																		<img src="{{ compra.cliente.foto_perfil.url }}" width="60">
+																	</div>
+																	<div class="comment-author">
+																		<img src="{{ compra.producto.get_pic }}" width="60">
+																	</div>
+																</td>
+																<!-- Shopping Cart Item Description & Features -->
+																<td>							
+																	<p><b>Cliente: </b>{{ compra.cliente.nombre }} {{ compra.cliente.apellido }}</p> 
+																	<p><b>Producto: </b>{{ compra.producto.nombre }}</p>
+																	<p><b>Fecha: </b>{{ compra.fecha_compra }}</p>
+																</td>			
+																<td>
+																	<span class="badge">{{ compra.estado }}</span>
+																</td>
+																<tr>
+																	<td colspan="3">
+																		<div align="center">
+																			<a href="{% url 'comerce_app:VerVenta' compra.id %}" class="btn btn" style="color:white">Ver Compra</a>
+																		</div>
+																	</td>
+																</tr>
+															</tr>					
+														</table>
+													{% endfor %}
+													
+													{% else %}
+														<div class="alert alert-success">
+															<strong>¡Todas las compras han sido procesadas!</strong>
+														</div>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="tab-pane" id="verificar">
+									<div class="row">
+										<div class="col-md-12">
+											<h2>Compras por Verificar y Enviar ({{ comprasEnviar.count }})</h2>
+											<div class="basic-login">
+												{% if comprasEnviar %}
+														
+														{% for compra in comprasEnviar %}										
+															<table class="shopping-cart">
+																<!-- Shopping Cart Item -->
+																<tr>
+																	<td colspan="3">
+																		<div align="center">
+																			<h4>Indentificación Nro: {{ compra.id }}</h3>
+																		</div>
+																	</td>
+																</tr>
+																<tr>
+																	<!-- Shopping Cart Item Image -->
+																	<td class="image">
+																		<div class="comment-author">
+																			<img src="{{ compra.cliente.foto_perfil.url }}" width="60">
+																		</div>
+																		<div class="comment-author">
+																			<img src="{{ compra.producto.get_pic }}" width="60">
+																		</div>
+																	</td>
+																	<!-- Shopping Cart Item Description & Features -->
+																	<td>							
+																		<p><b>Cliente: </b>{{ compra.cliente.nombre }} {{ compra.cliente.apellido }}</p> 
+																		<p><b>Producto: </b>{{ compra.producto.nombre }}</p>
+																		<p><b>Fecha: </b>{{ compra.fecha_compra }}</p>
+																	</td>			
+																	<td>
+																		<span class="badge">{{ compra.estado }}</span>
+																	</td>
+																	<tr>
+																		<td colspan="3">
+																			<div align="center">
+																				<a href="{% url 'comerce_app:VerVenta' compra.id %}" class="btn btn" style="color:white">Ver Compra</a>
+																			</div>
+																		</td>
+																	</tr>
+																</tr>					
+															</table>
+														{% endfor %}
+														
+														{% else %}
+															<div class="alert alert-success">
+																<strong>¡Todas las compras han sido enviadas!</strong>
+															</div>
+													{% endif %}
+												</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="tab-pane" id="recepcion">
+									<div class="row">
+										<div class="col-md-12">
+											<h2>Compras en Espera de Recepción ({{ comprasEnviadas.count }})</h2>
+											<div class="basic-login">
+												{% if comprasEnviadas %}
+														
+														{% for compra in comprasEnviadas %}										
+															<table class="shopping-cart">
+																<!-- Shopping Cart Item -->
+																<tr>
+																	<td colspan="3">
+																		<div align="center">
+																			<h4>Indentificación Nro: {{ compra.id }}</h3>
+																		</div>
+																	</td>
+																</tr>
+																<tr>
+																	<!-- Shopping Cart Item Image -->
+																	<td class="image">
+																		<div class="comment-author">
+																			<img src="{{ compra.cliente.foto_perfil.url }}" width="60">
+																		</div>
+																		<div class="comment-author">
+																			<img src="{{ compra.producto.get_pic }}" width="60">
+																		</div>
+																	</td>
+																	<!-- Shopping Cart Item Description & Features -->
+																	<td>							
+																		<p><b>Cliente: </b>{{ compra.cliente.nombre }} {{ compra.cliente.apellido }}</p> 
+																		<p><b>Producto: </b>{{ compra.producto.nombre }}</p>
+																		<p><b>Fecha: </b>{{ compra.fecha_compra }}</p>
+																	</td>			
+																	<td>
+																		<span class="badge">{{ compra.estado }}</span>
+																	</td>
+																	<tr>
+																		<td colspan="3">
+																			<div align="center">
+																				<a href="{% url 'comerce_app:VerVenta' compra.id %}" class="btn btn" style="color:white">Ver Compra</a>
+																			</div>
+																		</td>
+																	</tr>
+																</tr>					
+															</table>
+														{% endfor %}
+														
+														{% else %}
+															<div class="alert alert-success">
+																<strong>¡Todas las compras han sido recibidas por los clientes!</strong>
+															</div>
+													{% endif %}
+												</div>
+											</div>
+									</div>
+								</div>
+
+								<div class="tab-pane" id="concretado">
+									<div class="row">
+										<div class="col-md-12">
+											<h2>Compras Concretadas ({{ comprasListo.count }})</h2>
+											<div class="basic-login">
+												{% if comprasListo %}
+														
+													{% for compra in comprasListo %}										
+														<table class="shopping-cart">
+															<!-- Shopping Cart Item -->
+															<tr>
+																<td colspan="3">
+																	<div align="center">
+																		<h4>Indentificación Nro: {{ compra.id }}</h4>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<!-- Shopping Cart Item Image -->
+																<td class="image">
+																	<div class="comment-author">
+																		<img src="{{ compra.cliente.foto_perfil.url }}" width="60">
+																	</div>
+																	<div class="comment-author">
+																		<img src="{{ compra.producto.get_pic }}" width="60">
+																	</div>
+																</td>
+																<!-- Shopping Cart Item Description & Features -->
+																<td>							
+																	<p><b>Cliente: </b>{{ compra.cliente.nombre }} {{ compra.cliente.apellido }}</p> 
+																	<p><b>Producto: </b>{{ compra.producto.nombre }}</p>
+																	<p><b>Fecha: </b>{{ compra.fecha_compra }}</p>
+																</td>			
+																<td>
+																	<span class="badge">{{ compra.estado }}</span>
+																</td>
+																<tr>
+																	<td colspan="3">
+																		<div align="center">
+																			<a href="{% url 'comerce_app:VerVenta' compra.id %}" class="btn btn" style="color:white">Ver Compra</a>
+																		</div>
+																	</td>
+																</tr>
+															</tr>					
+														</table>
+													{% endfor %}
+													
+													{% else %}
+														<div class="alert alert-info">
+															<strong>No hay compras concretadas aún.</strong>
+														</div>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div> <!-- TABS -->
+						</div>	
+					</div>
+					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock cuerpo %}
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

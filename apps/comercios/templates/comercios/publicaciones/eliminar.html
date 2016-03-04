@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	{{ publicacion.titulo }}
+{% endblock titulo %}
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				{% include "comercios/navsuperior.html" %}
+				<div class="alert alert-danger">
+					<form role="form" method="POST" action="{% url 'comerce_app:EliminarPublicacion' publicacion.id  %}">
+						{% csrf_token %}
+						<p>¿Seguro desea eliminar esta publicación?</p>
+						<button class="btn" type="submit">Si</button>
+						<a class="btn" href="{% url 'comerce_app:ListarPublicaciones' %}">No</a>
+					</form>
+				</div>				
+				<div class="blog-post blog-single-post">
+					<div class="single-post-title">
+						<h3>{{ publicacion.titulo }}</h3>
+					</div>
+					<div class="single-post-info">
+						<i class="glyphicon glyphicon-time"></i>{{ publicacion.fecha_pub|timesince }} <i class="glyphicon glyphicon-comment"></i>{{ comentarios.count }}
+					</div>
+					<div class="row">
+						<div class="single-post-content" >
+						{{ publicacion.contenido|safe }}
+					</div>	
+					</div>				
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock cuerpo %}
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

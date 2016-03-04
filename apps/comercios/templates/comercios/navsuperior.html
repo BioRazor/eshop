@@ -1,0 +1,63 @@
+<div class="navbar navbar-inverse">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<ul class="nav nav-pills pull-center">
+					<a class="navbar-brand">Administración</a>
+				 	<li role="presentation" class="{% ifequal request.path '/comercios/dashboard/'%}active{% endifequal%}"><a href="{% url 'comerce_app:DashBoard' %}">Menú</a></li>
+
+				 	<li role="presentation" class="{% ifequal request.path '/comercios/mis_datos/'%}active{% endifequal%}"><a href="{% url 'comerce_app:VerComercio' request.user.comercio.id %}">Mi Perfil</a></li>
+
+				  	<li>
+				  		<div class="dropdown">
+						  <button class="btn btn-default dropdown-toggle" type="button" id="productos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						    Productos
+						    <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="productos">
+						    <li><a href="{% url 'comerce_app:addProducto' %}">Nuevo</a></li>
+						    <li><a href="{% url 'comerce_app:ListarProductos' %}">Ver Productos</a></li>
+						  </ul>
+						</div>
+				  	</li>
+				  	<li>
+				  		<div class="dropdown">
+						  <button class="btn btn-default dropdown-toggle" type="button" id="ventas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						    Ventas
+						    <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="ventas">
+						    <li><a href="{% url 'comerce_app:ListaVentas' %}">Ver Ventas</a></li>
+						  </ul>
+						</div>
+				  	</li>
+				  	<li>
+				  		<div class="dropdown">
+						  <button class="btn btn-default dropdown-toggle" type="button" id="publicaciones" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						    Publicaciones
+						    <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="publicaciones">
+						    <li><a href="{% url 'comerce_app:addPublicacion' %}">Nueva</a></li>
+						    <li><a href="{% url 'comerce_app:ListarPublicaciones' %}">Ver Publicaciones</a></li>
+						  </ul>
+						</div>
+				  	</li>
+				  	<li>
+				  		<div class="dropdown">
+						  <button class="btn btn-default dropdown-toggle" type="button" id="publicaciones" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						    Recibos de Pago
+						    <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="publicaciones">
+						    <li><a href="{% url 'comerce_app:addPublicacion' %}">Información sobre Recibos</a></li>
+						    <li><a href="{% url 'principal:ListarRecibos' %}">Ver Recibos de Pagos</a></li>
+						  </ul>
+						</div>
+				  	</li>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	Perfil de {{ comercio.nombre }}
+{% endblock titulo %}
+
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="comment-author">
+					<table class="shopping-cart">
+						<tr>
+							<td class="image">
+								<img src="{{ comercio.foto_perfil.url }}" width="190">
+							</td>
+							<td>
+								<h2>{{ comercio.nombre }}</h2>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="col-sm-6">
+					<div class="portfolio-item">
+						<div class="portfolio-image">
+							<img src="{{ comercio.foto_portada.url }}" alt="Project Name">
+						</div>
+					</div>
+				</div>
+				<!-- End Image Column -->
+				<!-- Project Info Column -->
+				<div class="portfolio-item-description col-sm-6">
+					<div class="basic-login">
+						<ul class="no-list-style">
+							<li><b>RIF:</b>{{ comercio.rif }}</li>
+							<li><b>Correo:</b><a href="mailto: {{ comercio.usuario.email }}"> {{ comercio.usuario.email }}</a></li>
+							<li><b>Telefono:</b> 0{{ comercio.get_tlf }}</li>
+							<li><b>Desde:</b> {{ comercio.fecha_reg }} - {{ comercio.fecha_reg|timesince }}</li>
+							<li><b>Direccion:</b></li>
+							<li>
+								<p>
+									{{ comercio.direccion }}
+								</p>
+							</li>
+							{% if user.is_authenticated  %}
+								{% if request.user.cliente %}
+									<li>
+										<form method='POST' action="{% url 'client_app:SeguirComercio' request.user.cliente.id comercio.id %}">
+											{% csrf_token %}
+											<button class="btn btn-sm" {% if seguido %}disabled="disabled"{% endif %} type="submit"><span class="glyphicon glyphicon-ok-circle"></span> Seguir</button>
+										</form>
+										<br>
+										{% if opinionForm %}
+											{% include "comercios/comercio/modal-valorar-comercio.html" %}
+										{% endif %}
+									</li>								
+								{% endif %}
+							{% endif %}
+
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="tabbable">
+					<!-- Tabs -->
+					<ul class="nav nav-tabs product-details-nav">
+						<li class="active"><a href="#productos" data-toggle="tab">Productos</a></li>
+						<li><a href="#publicaciones" data-toggle="tab">Publicaciones</a></li>
+						<li><a href="#estadisticas" data-toggle="tab">Estadísticas</a></li>
+						<li><a href="#opiniones" data-toggle="tab">Opiniones y Puntajes ({{ opiniones.count }})
+					</ul>
+					<!-- Tab Content (Full Description) -->
+					<div class="tab-content product-detail-info">
+						<div class="tab-pane active" id="productos">
+							<div class="row">
+								{% for producto in productos %}
+									<div class="col-sm-4">
+										<!-- Product -->
+										<div class="shop-item">
+											<!-- Product Image -->
+											<div class="image">
+												{% comment %}
+													Se recorren las foto traidas desde la View, y se muestran las que correspondan al producto
+													en cuestion
+												{% endcomment %}
+												{% for foto in fotos %}
+													{% if foto.producto.id == producto.id %}	
+														<!--Carousel-->										
+														<div id="carousel-{{ producto.id }}" class="carousel slide" data-ride="carousel">
+														  <!-- Indicators -->
+														  <ol class="carousel-indicators">
+														    <li data-target="#carousel-{{ producto.id }}" data-slide-to="0" class="active"></li>
+														    <li data-target="#carousel-{{ producto.id }}" data-slide-to="1"></li>
+														    <li data-target="#carousel-{{ producto.id }}" data-slide-to="2"></li>
+														    <li data-target="#carousel-{{ producto.id }}" data-slide-to="3"></li>
+														  </ol>
+
+														  <!-- Wrapper for slides -->
+														  <div class="carousel-inner" role="listbox">
+														    <div class="item active">
+														      <img class="fix-img-index" src="{{ foto.foto0.url }}" alt="{{ producto.nombre }}">
+														    </div>
+														    <div class="item">
+														      <img class="fix-img-index" src="{{ foto.foto1.url }}" alt="{{ producto.nombre }}">
+														    </div>
+														    <div class="item">
+														      <img class="fix-img-index" src="{{ foto.foto2.url }}" alt="{{ producto.nombre }}">
+														    </div>
+														    <div class="item">
+														      <img class="fix-img-index" src="{{ foto.foto3.url }}" alt="{{ producto.nombre }}">
+														    </div>
+														  </div>
+
+														  <!-- Controls -->
+														  <a class="left carousel-control" href="#carousel-{{ producto.id }}" role="button" data-slide="prev">
+														    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+														    <span class="sr-only">Previous</span>
+														  </a>
+														  <a class="right carousel-control" href="#carousel-{{ producto.id }}" role="button" data-slide="next">
+														    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+														    <span class="sr-only">Next</span>
+														  </a>
+														</div>	<!--end carousel-->
+														
+													{% endif %}									
+												{% endfor %}
+											</div>
+											<!-- Product Title -->
+											<div class="title" align="center">
+												<h4 align="center"><a href="{% url 'comerce_app:VerProducto' producto.id %}">{{ producto.nombre|capfirst }}</a></h4>
+												<span class="badge"><span class="glyphicon glyphicon-eye-open"></span> {{ producto.visitas }}</span>
+												<span class="badge"><span class="glyphicon glyphicon-star"></span> {{ producto.visitas }}</span>
+												<span class="badge"><span class="glyphicon glyphicon-shopping-cart"></span> {{ producto.visitas }}</span>
+											</div>
+											<!-- Product Price-->
+											<div class="price">
+												{{ producto.precio }}Bs.								
+											</div>
+											<div>
+
+											</div>
+											<!-- Product Description-->
+											<div class="description">
+												<p>{{ producto.descripcion_corta }}</p>									
+											</div>
+											<div class="actions">
+												<a href="{% url 'comerce_app:VerProducto' producto.id %}" class="btn btn-md"><i class="icon-shopping-cart icon-white"></i> <span class="glyphicon glyphicon-eye-open"></span> Ver Producto</a>
+											</div>
+										</div>
+										<!-- End Product -->
+									</div><!-- End Col producto -->
+								{% endfor %}
+							</div>
+						</div>
+						<!-- Tab Content (Specification) -->
+						<div class="tab-pane" id="publicaciones">
+							<div class="row">
+								{% for publicacion in publicaciones %}
+									<div class="col-sm-4">
+										<div class="blog-post">
+											<div class="single-post-title">
+												<h3><a href="{% url 'comerce_app:VerPublicacion' publicacion.id %}">{{ publicacion.titulo }}</a></h3>
+											</div>
+											<div class="single-post-info">
+												<i class="glyphicon glyphicon-time"></i>{{ publicacion.fecha_pub|timesince }} <a href="#" title="Ver Comentarios"><i class="glyphicon glyphicon-comment"></i>{{ publicacion.count_comments }}</a>
+											</div>
+											<div class="post-summary">
+												{{ publicacion.contenido|safe|truncatewords:20 }}
+											</div>
+											<div class="actions">
+												<a href="{% url 'comerce_app:VerPublicacion' publicacion.id %}" class="btn btn-xs">Leer</a>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+						<div class="tab-pane" id="estadisticas">
+							<div class="tab-content product-detail-info">
+								<table>	
+								<tbody>
+									<tr>
+										<td>Ventas Concretadas</td>
+										<td>{{ compras }}</td>
+									</tr>
+									<tr>
+										<td>Publicaciones</td>
+										<td>{{ publicaciones.count }}</td>
+									</tr>
+									<tr>
+										<td>Productos</td>
+										<td>{{ productos.count }}</td>
+									</tr>
+									<tr>
+										<td>Seguidores</td>
+										<td>Pronto...</td>
+									</tr>
+									<tr>
+										
+									</tr>				
+								</tbody>							
+								</table>
+							</div>
+						</div>
+						<div class="tab-pane" id="opiniones">
+							<h4>Opiniones de Clientes que compraron el producto.</h4>
+							{% if opiniones %}
+								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+									{% for opinion in opiniones %}
+									  <div class="panel panel-default">
+
+									    <div class="panel-heading" role="tab" id="{{ opinion.id }}">
+									      <h4 class="panel-title">
+									        <a {% if forloop.counter0 == 1 %}class="collapsed"{% endif %} role="button" data-toggle="collapse" data-parent="#accordion" href="#{{ opinion.id|add:1 }}" aria-expanded="{% if forloop.counter0 == 1 %}true {% else %}false{% endif %}" aria-controls="{{ opinion.id|add:1 }}">
+									          Opinion de {{ opinion.cliente.nombre }} {{ opinion.cliente.apellido }}
+									        </a>
+									      </h4>
+									    </div>
+
+									    <div id="{{ opinion.id|add:1 }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="{{ opinion.id }}">
+									      <div class="panel-body">
+									      	<p><b>Puntaje:</b></p>
+									      	{% if opinion.puntaje == 5 %}
+									      		<span class="glyphicon glyphicon-star"></span>
+									      		<span class="glyphicon glyphicon-star"></span>
+									      		<span class="glyphicon glyphicon-star"></span>
+									      		<span class="glyphicon glyphicon-star"></span>
+									      		<span class="glyphicon glyphicon-star"></span>
+									      	{% endif %}
+									      	{% if opinion.puntaje == 4 %}
+									      		<span class="glyphicon glyphicon-star"></span>
+									      		<span class="glyphicon glyphicon-star"></span>
+									      		<span class="glyphicon glyphicon-star"></span>
+									      		<span class="glyphicon glyphicon-star"></span>
+									      	{% endif %}
+									      	{% if opinion.puntaje == 3 %}
+									      		<span class="glyphicon glyphicon-star"></span>
+									      		<span class="glyphicon glyphicon-star"></span>
+									      		<span class="glyphicon glyphicon-star"></span>
+									      	{% endif %}
+									      	{% if opinion.puntaje == 2 %}
+									      		<span class="glyphicon glyphicon-star"></span>
+									      		<span class="glyphicon glyphicon-star"></span>
+									      	{% endif %}
+									      	{% if opinion.puntaje == 1 %}
+									      		<span class="glyphicon glyphicon-star"></span>
+									      	{% endif %}
+									      	<p>
+									      		<b>Opinión:</b>
+										        {{ opinion.opinion }}
+									      	</p>
+									      </div>
+									    </div>
+
+									  </div>
+										
+									{% endfor %}
+
+								</div>
+								{% else %}
+									<div class="alert alert-info">
+										<p>Ninguna Opinion por ahora</p>
+									</div>
+							{% endif %}
+						</div>
+					</div>
+				</div> <!-- TABS -->
+
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock cuerpo %}
+
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

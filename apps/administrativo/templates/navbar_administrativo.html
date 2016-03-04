@@ -1,0 +1,70 @@
+<!-- Navigation & Logo-->
+<div class="mainmenu-wrapper">
+    <div class="container">
+    	<div class="menuextras">
+			<div class="extras">
+				<ul>			
+					{% comment %}
+						Se muestra la parte superior de la barra de navegacion dependiendo si el usuario
+						esta autenticado o no					
+					{% endcomment %}				
+					{% if user.is_authenticated%}
+						{% if user.comercio %}
+							<div class="btn-group" > <!--dropdown-->
+							  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <span class="glyphicon glyphicon-user"></span> {{ user.username|capfirst }} <span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu">
+							    <li><a href="{% url 'comerce_app:DashBoard' %}">Menú</a></li>
+							    <li><a href="{% url 'comerce_app:VerComercio' request.user.comercio.id %}">Mi Perfil</a></li></li>
+							    <li><a href="{% url 'principal:salir' %}">Salir</a></li>
+							  </ul>
+							</div><!--Dropdown-->
+						{% endif %}
+						{% if user.cliente %}
+							<div class="btn-group" > <!--dropdown-->
+							  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <span class="glyphicon glyphicon-user"></span> {{ user.username|capfirst }} <span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu">
+							    <li><a href="{% url 'client_app:DashBoard' %}">Mi Perfil</a></li>
+							    <li><a href="{% url 'principal:salir' %}">Salir</a></li>
+							  </ul>
+							</div><!--Dropdown-->					
+						{% endif %}							
+					{% else %}
+						<li><a class="btn btn-xs" style="color:white" href="{% url 'principal:RegistroCliente' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Regístrate como Cliente</a></li>
+						<li><a class="btn btn-xs" style="color:white" href="{% url 'principal:RegistroComercio' %}"><span class="glyphicon glyphicon-briefcase"></span> Regístrate como Comercio</a></li>
+						<li><a class="btn btn-xs" style="color:white" href="{% url 'principal:login' %}"><span class="glyphicon glyphicon-log-in"></span> Entra</a></li>
+					{% endif %}
+	        	</ul>
+			</div>
+        </div>
+        <nav id="mainmenu" class="mainmenu">
+			<ul>
+				<li class="logo-wrapper"><a href="{% url 'principal:home' %}"><img src="/static/img/logo.png" alt="Logo" heigth="120" width="120"></a></li>
+				<li class="active">
+					<a href="{% url 'principal:home' %}">Inicio</a>
+				</li>
+
+				<li>
+					<a href="{% url 'principal:Comercios' %}">Comercios</a>
+				</li>
+				<li>
+					
+				<li>
+					<a href="{% url 'principal:Productos' %}">Productos</a>
+				</li>
+				<li>
+					<a href="{% url 'principal:Publicaciones' %}">Publicaciones</a>
+				</li>
+
+				<li>
+					<form action="{% url 'principal:Buscar' %}" method="GET">						
+						<input id="texto" name="texto" type="text" class="form-control input-sm" placeholder="Buscar..." required>
+					</form>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</div>

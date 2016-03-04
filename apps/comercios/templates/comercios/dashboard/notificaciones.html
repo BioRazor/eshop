@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	Menú {{ user.comercio.nombre }}
+{% endblock titulo %}
+
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+	{% include "comercios/navsuperior.html" %}
+	<div class="container">
+		<div class="row">
+			{% comment %}
+				Se incluye la barra lateral para comercios
+			{% endcomment %}
+			
+			<div class="col-md-12">
+				<h2>Tus Notificaciones</h2>
+				<div class="row basic-login">
+					<div class="col-md-8 col-md-offset-2">
+						{% for notificacion in notificaciones %}
+							<table class="table {% if notificacion.leido %}alert-success{% else %}alert-info{% endif %}">
+								<tr>
+									<td>
+										Hace: {{ notificacion.fecha_reg|timesince }}
+									</td>
+									<td>
+										{{ notificacion.descripcion }}
+									</td>
+									<td>
+										<form method="POST" action="{% url 'principal:VerNotificacion' notificacion.id %}">
+											{% csrf_token %}
+											<button class="btn" type="submit">Ver</button>
+										</form>
+									</td>
+									<td>
+										{% if notificacion.leido %}
+											<span class="badge">Leído</span>
+											{% else %}
+											<a class="btn">Marcar como leido Leído</a>
+										{% endif %}
+
+									</td>
+								</tr>
+							</table>
+						{% empty %}
+							<div class="alert alert-info">
+								<p>Ninguna notificación, por ahora :).</p>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock cuerpo %}
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

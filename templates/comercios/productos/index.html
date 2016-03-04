@@ -1,0 +1,11 @@
+<h1>Lista de Produtos de {{ producto.Comercio }}</h1>
+
+{% for producto in productos %}
+		{{ producto.nombre }}
+		{% comment %}
+			Se utiliza el filtro |safe para que no se muestre el contenido HTML
+		{% endcomment %}
+		{{ producto.descripcion|safe}}
+		{{ producto.precio }}
+	
+{% endfor %}

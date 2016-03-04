@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	Pagar Compra
+{% endblock titulo %}
+
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Pagar compra de {{ compra.cantidad }} {{ compra.producto.nombre }}</h2><div class="alert alert-info">
+					<strong>
+						<p>Debes rellenar este formulario cuando hayas realizado el pago del producto.</p>					
+						<p>Si ya has cancelado el producto, favor envia los datos del pago.</p>
+					</strong>
+				</div>
+				<div class="basic-login">
+					<div align="center">
+						<a class="btn pull-left" href="{% url 'client_app:DashBoard' %}"><span class="glyphicon glyphicon-chevron-left"></span> Volver</a>
+						<h1>Datos de la Compra</h1>
+						<table class="shopping-cart">
+							<tr>
+								<td>
+									<div class="comment-author">
+										<img src="{{ compra.producto.Comercio.foto_perfil.url }}" alt="User Name">
+									</div>
+								</td>
+								<td>
+									<h4>{{ compra.producto.Comercio.nombre }}</h4>
+									<p>{{ compra.producto.Comercio.usuario.email }}</p>
+									<p>{{ compra.producto.Comercio.rif }}</p>
+									<p>0{{ compra.producto.Comercio.get_tlf }}</p>
+								</td>
+								<td>
+									<p>{{ compra.fecha_compra|date:"D d M Y" }}</p>
+								</td>
+								<td>
+									<p>{{ compra.fecha_compra|timesince }}</p>
+								</td>
+								<td>
+									<div class="alert alert-info">
+										<strong>{{ compra.estado|capfirst }}</strong>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<!-- Shopping Cart Item Image -->
+								<td class="image"><a href="{% url 'comerce_app:VerProducto' compra.producto.id %}"><img src="{{ fotos.foto0.url }}" alt="Item Name"></a></td>
+								<!-- Shopping Cart Item Description & Features -->
+								<td>
+									<div class="cart-item-title">
+										<h4><a href="{% url 'comerce_app:VerProducto' compra.producto.id %}">{{ compra.producto.nombre }}</a></h4>
+									</div>
+									<div class="feature">
+										<p>
+											{{ compra.producto.descripcion_corta }}
+										</p>
+									</div>
+								</td>
+								<!-- Shopping Cart Item Quantity 
+								<td class="quantity">
+									<input class="form-control input-sm input-micro" type="text" value="1">
+								</td>
+								-->
+								<td>
+									{{ compra.cantidad }}
+								</td>				
+								<td>
+									{{ compra.producto.precio }}
+								</td>		
+								<td class="price" colspan="2">
+									<p>A cancelar:</p>
+									{% comment %}
+										Se multiplica el precio del producto por la cantidad comprada
+									{% endcomment %}
+									<p>{% widthratio  compra.producto.precio 1 compra.cantidad %} Bs.</p>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								{% if compra.envio %}
+									<td>
+										<strong>Dirección de envío:</strong>
+										<p>{{ compra.envio.direccion }}</p>
+									</td>
+									<td>
+										<strong>Detalles</strong>
+										<p>{{ compra.envio.detalles }}</p>
+									</td>				
+									<td>
+										<strong>Agencia</strong>
+										<p>{{ compra.envio.agencia }}</p>
+									</td>
+								{% else %}					
+									<td>
+										<strong>Retirar por la tienda</strong>
+									</td>
+								{% endif %}
+								{% if compra.envio.fecha_recepcion %}
+									<td>
+										<strong>Retirado el:</strong> {{ compra.envio.fecha_recepcion|date:"D d M Y" }}
+									</td>
+								{% endif %}
+							</tr>					
+						</table>
+					</div>
+				</div>
+				<br>
+				<div class="basic-login">
+					<h2>Información de pago</h2>
+					<div class="alert alert-warning">
+						<p>El pago lo deberas realizar unicamente con la información suministrada por el comercio en la descripción del producto.</p>
+					</div>
+					{% if compra.estado == 'en_proceso' %}
+						{% if compra.envio %}
+							<form role="form" class="form-horizontal" method="POST">
+								{% csrf_token %}
+								<div class="form-group">
+									<label>Tipo de pago realizado:</label>
+									{{ PagoForm.tipo_pago }}
+									{{ PagoForm.tipo_pago.errors }}
+								</div>
+								<div class="form-group">
+									<label>Banco:</label>
+									{{ PagoForm.banco }}
+									{{ PagoForm.banco.errors }}
+								</div>
+								<div class="form-group">
+									<label>Número de cuenta:</label>
+									{{ PagoForm.cuenta }}
+									{{ PagoForm.cuenta.errors }}
+								</div>
+								<div class="form-group">
+									<label>Número de referencia:</label>
+									{{ PagoForm.nro_referencia }}
+									{{ PagoForm.nro_referencia.errors }}
+								</div>
+								<div class="form-group">
+									<label>Con la fecha:</label>
+									{{ PagoForm.fecha_pago }}
+									{{ PagoForm.fecha_pago.errors }}
+								</div>
+								<button type="submit" class="btn">Enviar</button>
+							</form>
+						{% else %}
+							<div class="alert alert-info">
+								<p>Como has seleccionado retirar el producto personalmente no hay nada que llenar por aquí, avisanos cuando hayas retirado el producto</p>
+								<form role="form" class="form-horizontal" method="POST">
+									{% csrf_token %}
+									<button type="submit" class="btn">Ya he retirado el producto</button>						
+								</form>
+							</div>					
+						{% endif %}						
+					{% endif %}
+					{% if compra.estado == 'pagado' %}
+						<div class="alert alert-info">
+							<p>Ya has cancelado esta compra. El comercio debe verificar el pago y enviar tu producto, esta atento. Recuerda que siempre puedes contactar al comercio.</p>
+						</div>	
+					{% endif %}
+					{% if compra.estado == 'enviado' %}						
+						<div class="alert alert-info">
+							<p>Ya has cancelado esta compra y el comercio ya ha enviado el producto. Si todo va bien llegara pronto! :)</p><br>
+							<form method="POST" action="{% url 'client_app:RecibirProducto' compra.id %}" align="center">
+								{% csrf_token %}
+								<button class="btn" type="submit">He recibido el Producto</button>
+							</form>
+						</div>
+					{% endif %}
+					{% if compra.estado == 'recibido' %}
+						<div class="alert alert-success">
+							<strong>Ya has cancelado esta compra y recibido el producto. ¡Que lo disfrutes! :)</strong>
+							{% if opinionForm %}
+								<p>¡Ahora puedes usar el producto y contarnos que tal es!</p>
+								{% include "clientes/compras/modal-valorar-producto.html" %}							
+							{% endif %}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>	
+{% endblock cuerpo %}
+
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	Menú {{ user.comercio.nombre }}
+{% endblock titulo %}
+
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+	{% include "comercios/navsuperior.html" %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Tus Recibos de Pago</h1>
+				<div class="tab-pane" id="compras">
+					<div class="tabbable">
+    					<!-- Tabs -->
+						<ul class="nav nav-tabs product-details-nav">
+							<li class="active"><a href="#pendiente" data-toggle="tab">Pendientes</a></li>
+							<li><a href="#cancelados" data-toggle="tab">Cancelados</a></li>
+						</ul>
+						<!-- Tab Content (Full Description) -->
+						<div class="tab-content product-detail-info">
+							<div class="tab-pane active" id="pendiente">
+								{% if recibosPendientes %}
+									<div class="row">
+										{% for recibo in recibosPendientes %}
+											<div class="col-md-6">
+												<table class="shopping-cart">
+													<tr>
+														<td colspan="3" align="center">
+															<h2>Recibo Nro: {{ recibo.id }}</h2>
+														</td>
+													</tr>
+													<tr>
+														<td class="image">
+															<div class="comment-author">
+																<img src="{{ recibo.comercio.foto_perfil.url }}" alt="{{ compra.cliente.nombre }}" width="90">
+															</div>
+														</td>
+														<td>
+															<h4>{{ recibo.comercio.nombre }}</h4>
+															<p>{{ recibo.comercio.rif }}</p>
+														</td>
+														<td>
+															<p><b>Fecha Registro:</b></p>
+															<p>{{ recibo.comercio.fecha_reg }}</p>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<p><b>Fecha Inicio:</b></p>
+															<p>{{ recibo.fecha_inicio|date:"D d M Y" }}</p>
+														</td>
+														<td>
+															<p><b>Fecha fin:</b></p>
+															<p>Por asignar en el pago</p>
+														</td>
+														<td>
+															<div class="alert alert-info">
+																<strong>{{ recibo.estado|capfirst }}</strong>
+															</div>
+														</td>
+													</tr>
+													<tr>													
+														<td colspan="2">
+															<p><b>Descripción:</b></p>
+															<p>
+																{{ recibo.descripcion }}
+															</p>
+														</td>
+														<td>
+															{{ recibo.precio }}Bs.
+														</td>
+													</tr>	
+												</table>
+												{% if recibo.estado == 'por cancelar' %}
+													<td colspan="3" align="center">
+														<a class="btn btn-sm" href="{% url 'principal:VerRecibo' recibo.id %}">Pagar Recibo</a>
+													</td>
+												{% endif %}
+												{% if recibo.estado == 'por verificar pago' %}
+													<div class="alert alert-info">
+														<p>Los administradores verificarán el pago del recibo, se te notificará en cuando este validado.</p>
+														<a class="btn btn-sm" href="{% url 'principal:VerRecibo' recibo.id %}">Ver Recibo</a>
+													</div>
+												{% endif %}
+											</div>									
+										{% endfor %}
+									</div>
+								{% else %}
+									<div class="alert alert-info">
+										<p>No posees recibos pendientes. :)</p>
+									</div>
+								{% endif %}
+							</div>
+							<!-- Tab Content (Specification) -->
+							<div class="tab-pane" id="cancelados">
+								{% if recibosCancelados %}
+									<div class="row">
+									{% for recibo in recibosCancelados %}
+										<div class="col-md-6">
+											<table class="shopping-cart">
+												<tr>
+													<td colspan="3" align="center">
+														<h2>Recibo Nro: {{ recibo.id }}</h2>
+													</td>
+												</tr>
+												<tr>
+													<td class="image">
+														<div class="comment-author">
+															<img src="{{ recibo.comercio.foto_perfil.url }}" alt="{{ compra.cliente.nombre }}" width="90">
+														</div>
+													</td>
+													<td>
+														<h4>{{ recibo.comercio.nombre }}</h4>
+														<p>{{ recibo.comercio.rif }}</p>
+													</td>
+													<td>
+														<p><b>Fecha Registro:</b></p>
+														<p>{{ recibo.comercio.fecha_reg }}</p>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<p><b>Fecha Inicio:</b></p>
+														<p>{{ recibo.fecha_inicio|date:"D d M Y" }}</p>
+													</td>
+													<td>
+														<p><b>Fecha fin:</b></p>
+														<p>{{ recibo.fecha_fin|date:"D d M Y" }}</p>
+													</td>
+													<td>
+														<div class="alert alert-info">
+															<strong>{{ recibo.estado|capfirst }}</strong>
+														</div>
+													</td>
+												</tr>
+												<tr>													
+													<td colspan="2">
+														<p><b>Descripción:</b></p>
+														<p>
+															{{ recibo.descripcion }}
+														</p>
+													</td>
+													<td>
+														<a class="btn" href="{% url 'principal:VerRecibo' recibo.id %}">Ver</a>
+													</td>
+												</tr>	
+											</table>
+										</div>								
+									{% endfor %}
+									</div>	
+								{% else %}
+									<div class="alert alert-info">
+										<p>No posees recibos cancelados aún.</p>
+									</div>
+								{% endif %}
+							</div>
+
+						</div> <!--Ful description -->
+					</div><!--tabbable-->
+				</div> <!-- tab mis compras -->
+			</div>
+		</div>
+	</div>
+{% endblock cuerpo %}
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

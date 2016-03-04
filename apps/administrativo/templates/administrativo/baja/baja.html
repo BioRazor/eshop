@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	Venta - {{ compra.id }}
+{% endblock titulo %}
+
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+	{% if user.comercio %}
+		{% include "comercios/navsuperior.html" %}				
+	{% endif %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="basic-login">
+					<div align="center">
+						<h1>Darse de Baja</h1>

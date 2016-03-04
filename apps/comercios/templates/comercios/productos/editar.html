@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block titulo %}
+	Editar Producto
+{% endblock titulo %}
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+	{% include "comercios/navsuperior.html" %}
+	<div class="container">
+		<div class="col-md-12">
+					<h2>Editar Producto</h2>
+					<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+						{{ productoForm.media }}
+						<div class="row">
+							<div class="col-md-12">
+								<label>Nombre:</label>
+								{{ productoForm.nombre }}
+								{{ productoForm.nombre.errors }}
+								<label>Fotos:</label>
+								<br>
+								<div class="col-md-6 block-left">
+									<p>Foto #1</p>
+									<img src="{{ fotos.foto0.url }}" heigth="171" width="180" class ="thumbnail">
+									{{ fotoForm.foto0 }}
+									{{ fotoForm.foto0.errors }}									
+									<p>Foto #2</p>
+									<img src="{{ fotos.foto1.url }}" heigth="171" width="180" class ="thumbnail">
+									{{ fotoForm.foto1 }}
+									{{ fotoForm.foto1.errors }}
+								</div>
+								<div class="col-md-6 block-right">
+									<p>Foto #3</p>
+									<img src="{{ fotos.foto2.url }}" heigth="171" width="180" class ="thumbnail">
+									{{ fotoForm.foto2 }}
+									{{ fotoForm.foto2.errors }}
+									<p>Foto #4</p>
+									<img src="{{ fotos.foto3.url }}" heigth="171" width="180" class ="thumbnail">
+									{{ fotoForm.foto3 }}
+									{{ fotoForm.foto3.errors }}
+								</div>
+								<br>
+								<span id="helpBlock" class="help-block">
+									Si desea conservar las fotos. No eliga fotos nuevas.
+								</span>
+								<label>Precio:</label>
+								{{ productoForm.precio }}
+								{{ productoForm.precio.errors }}
+								<label>Descripción Corta:</label>
+								<span id="helpBlock" class="help-block">
+									La descripción corta sera mostrada en la pagina principal.
+								</span>
+								{{ productoForm.descripcion_corta }}
+								{{ productoForm.descripcion_corta.errors }}
+								<label>Descripción:</label>
+								<span id="helpBlock" class="help-block">
+									La descripción sera mostrada al abrir el producto.
+								</span>
+								{{ productoForm.descripcion }}
+								{{ productoForm.descripcion.errors }}
+								<h2></h2>
+								<div class="col-md-6">
+									<h3>Áreas de Interés</h3>
+									{{ productoForm.area_interes }}
+									{{ productoForm.area_interes.errors }}
+								</div>
+								<div class="col-md-6">
+									<h3>Especificaciones</h3>
+									<div class="form-group">
+										<label>Peso:</label>
+										{{ productoForm.peso }}
+										{{ productoForm.peso.errors }}
+
+										<label>Alto:</label>
+										{{ productoForm.alto }}
+										{{ productoForm.alto.errors }}
+
+										<label>Largo:</label>
+										{{ productoForm.largo }}
+										{{ productoForm.largo.errors }}
+
+										<label>Ancho:</label>
+										{{ productoForm.ancho }}
+										{{ productoForm.ancho.errors }}
+
+										<label>Stock:</label>
+										{{ productoForm.stock }}
+										{{ productoForm.stock.errors }}
+									</div>
+								</div>
+								<div class="center-block">
+									<button class="btn btn-lg" type="submit">Guardar</button>
+								</div>
+							</div>
+						</div>
+					</form>					
+				</div>
+	</div>
+
+{% endblock cuerpo %}
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

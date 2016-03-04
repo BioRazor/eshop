@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	{{ comercio.nombre }}
+{% endblock titulo %}
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				{% include "comercios/navsuperior.html" %}
+				<h2>
+					<img class="img-thumbnail" src="{{ comercio.foto_perfil.url }}" height="90" width="120"></img>
+					{{ comercio.nombre }}
+				</h2>
+				<div class="col-sm-12">
+    				<div class="tabbable">
+    					<!-- Tabs -->
+						<ul class="nav nav-tabs product-details-nav">
+							<li class="active"><a href="#tab1" data-toggle="tab">Comercio</a></li>
+							<li><a href="#tab2" data-toggle="tab">Areas Interes</a></li>
+						</ul>
+						<!-- Tab Content (Full Description) -->
+						<div class="tab-content product-detail-info">
+							<div class="tab-pane active" id="tab1">
+								<table class="table table-striped">
+									<tr>
+										<th>Username</th><td>{{ user.username }}</td>
+									</tr>
+									<tr>
+										<th>Email:</th><td>{{ user.email }}</td>
+									</tr>
+									<tr>
+										<th>R.I.F.::</th><td>{{ comercio.rif|upper }}</td>
+									</tr>
+									<tr>
+										<th>Direccion:</th><td><p>{{ comercio.direccion }}</p></td>
+									</tr>
+									<tr>
+										<th>Registrado Desde:</th><td>{{ comercio.fecha_reg }} - {{ comercio.fecha_reg|timesince }}</td>
+									</tr>
+								</table>										
+							</div>
+							<!-- Tab Content (Specification) -->
+							<div class="tab-pane" id="tab2">
+								
+							</div>
+						</div>
+					</div>
+    			</div>
+				<a class="btn" href="{% url 'comerce_app:DashBoard' %}">Volver</a>
+			</div>
+		</div>
+	</div>
+{% endblock cuerpo %}
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

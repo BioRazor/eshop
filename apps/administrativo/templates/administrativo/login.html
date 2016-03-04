@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	Login - Eshop
+{% endblock titulo %}
+
+{% block cuerpo %}
+{% include "navbar_administrativo.html" %}
+	<div class="container">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="col-md-6">
+						<h2>Entra</h2>
+						<p>Debes logearte para acceder a nuestros servicios</p>
+						{% if mensaje %}
+							<div class="alert alert-danger" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<p>{{ mensaje }}</p>
+							</div>
+						{% endif %}
+						<div class="basic-login">
+							<form role="form" method="POST"> {% csrf_token %}
+								<div class="form-group">
+							        {{ login_form.username.label_tag }}
+									{{ login_form.username }}
+									{{ login_form.username.errors }}
+								</div>
+								<div class="form-group">
+							        {{ login_form.password.label_tag }}
+									{{ login_form.password }}
+									{{ login_form.password.errors }}
+								</div>
+								<div class="form-group">
+									<a href="page-password-reset.html" class="forgot-password">Olvidaste tus datos?</a>
+									<button type="submit" class="btn pull-right">Entra</button> 
+									<button type="reset" class="btn pull-right">Limpiar</button>
+									<div class="clearfix"></div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<h2>Registrate</h2>
+						<p>¡Si aun no tienes una cuenta registrate! ¡Es Facil!</p>
+						<div class="basic-login">
+							<p>
+								<a class="btn btn-block" href="{% url 'principal:RegistroComercio' %}"><span class="glyphicon glyphicon-briefcase"></span> Registrate como Comercio</a>
+								<a class="btn btn-block" href="{% url 'principal:RegistroCliente' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Registrate como Cliente</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+{% endblock cuerpo %}
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

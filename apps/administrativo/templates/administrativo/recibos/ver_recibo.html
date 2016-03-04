@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	Menú {{ user.comercio.nombre }}
+{% endblock titulo %}
+
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+	{% include "comercios/navsuperior.html" %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Tus Recibos de Pago</h1>
+				{% if recibo.estado == 'por verificar pago' %}
+					<div class="alert alert-info">
+						<p>Los administradores verificarán el pago del recibo, se te notificará en cuando este validado.</p>
+					</div>
+				{% endif %}
+				<div class="row">
+					<div class="col-md-12">
+						<table class="shopping-cart">
+							<tr>
+								<td colspan="3" align="center">
+									<h2>Recibo Nro: {{ recibo.id }}</h2>
+								</td>
+							</tr>
+							<tr>
+								<td class="image">
+									<div class="comment-author">
+										<img src="{{ recibo.comercio.foto_perfil.url }}" alt="{{ compra.cliente.nombre }}" width="90">
+									</div>
+								</td>
+								<td>
+									<h4>{{ recibo.comercio.nombre }}</h4>
+									<p>{{ recibo.comercio.rif }}</p>
+								</td>
+								<td>
+									<p><b>Fecha Registro:</b></p>
+									<p>{{ recibo.comercio.fecha_reg }}</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p><b>Fecha Inicio:</b></p>
+									<p>{{ recibo.fecha_inicio|date:"D d M Y" }}</p>
+								</td>
+								<td>
+									<p><b>Fecha fin:</b></p>
+									{% if recibo.fecha_fin  %}
+										<p>{{ recibo.fecha_fin|date:"D d M Y" }}</p>
+										{% else %}
+											<p>Por asignar en el pago</p>										
+									{% endif %}
+								</td>
+								<td>
+									<div class="alert alert-info">
+										<strong>{{ recibo.estado|capfirst }}</strong>
+									</div>
+								</td>
+							</tr>
+							<tr>													
+								<td colspan="3">
+									<p><b>Descripción:</b></p>
+									<p>
+										{{ recibo.descripcion }}
+									</p>
+								</td>
+							</tr>	
+						</table>
+						{% if pagoReciboForm %}							
+							<div class="basic-login">
+								<div class="alert alert-info">
+									<b>Información</b>
+									<p>La mensualidad tiene un costo de <b>30.000Bs</b>.</p>
+									<p>Favor realizar los pagos con los siguientes datos:</p>
+									<p><b>Banco:</b> Banco Occidental de Descuento <b>(BOD)</b></p>
+									<p><b>A nombre de:</b> El Rey del Cassette FM C.A</p>
+									<p><b>RIF:</b> J-40443203-5</p>
+									<p><b>Cuenta:</b> Corriente</p>
+									<p><b>Nro:</b> 0116-0024-7100-2357-9749</p>
+								</div>
+								<h3>Formulario de Pago</h3>
+								<p>
+									Rellene los datos del formulario luego de realizado el pago del recibo.
+								</p>
+								<div class="row">
+									<div class="col-md-6 col-md-offset-1">
+										<form class="form-horizontal" method="POST" action="{% url 'principal:PagarRecibo' recibo.id %}">
+											{% csrf_token %}
+											{% for error in pagoReciboForm.non_field_errors %}
+										      <div class="alert alert-danger">
+										      	{{ error }}
+										      </div>
+										    {% endfor %}
+											<div class="form-group">
+												<label>Tipo de Pago:</label>
+												{{ pagoReciboForm.tipo_pago }}
+												{{ pagoReciboForm.tipo_pago.errors }}
+											</div>
+											<div class="form-group">
+												<label>Fecha de Pago:</label>
+												{{ pagoReciboForm.fecha_pago }}
+												{{ pagoReciboForm.fecha_pago.errors }}
+												<span class="help-block">
+													Preferiblemente use el Calendario del campo para ingresar la fecha.
+												</span>
+											</div>
+											<div class="form-group">
+												<label>Número de Referencia:</label>
+												{{ pagoReciboForm.nro_referencia }}
+												{{ pagoReciboForm.nro_referencia.errors }}
+												<span class="help-block">
+													Solo Numeros.
+												</span>
+											</div>
+											<div class="form-group">
+												<label>Meses a Cancelar:</label>
+												{{ pagoReciboForm.meses }}
+												{{ pagoReciboForm.meses.errors }}
+
+											</div>
+											<div class="form-group">
+												<label>Total Cancelado</label>
+												{{ pagoReciboForm.precio }}
+												{{ pagoReciboForm.precio.errors }}
+
+												<span class="help-block">
+													El pago es de 30.000Bs por mes. Debe corresponder a la cantidad de meses seleccionados.
+												</span>
+											</div>
+											<div class="form-group">
+												<button class="btn" type="submit">Enviar</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						{% else %}						
+							<table class="shopping-cart">
+								<tr>
+									<td colspan="4" align="center">
+										<h2>Pago Nro: {{ pagoRecibo.id }}</h2>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p><b>Fecha Pago:</b></p>
+										<p>{{ pagoRecibo.fecha_pago|date:"D d M Y" }}</p>
+									</td>
+									<td>
+										<p><b>Tipo de Pago:</b></p>
+										<p>{{ pagoRecibo.tipo_pago|capfirst }}</p>
+									</td>
+									<td>
+										<p><b>Número de Referencia:</b></p>
+										<p>{{ pagoRecibo.nro_referencia }}</p>
+									</td>
+									<td>
+										<p><b>Total Cancelado:</b></p>
+										<p>{{ pagoRecibo.precio }}Bs.</p>
+									</td>
+								</tr>
+							</table>
+						{% endif %}
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock cuerpo %}
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

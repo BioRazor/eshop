@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+	{% if request.path == '/comercios/nueva_publicacion/' %}
+		Nueva Publicación
+	{% else %}
+		Editando Publicación
+	{% endif %}
+{% endblock titulo %}
+{% block cuerpo %}
+	{% include "navbar_administrativo.html" %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				{% include "comercios/navsuperior.html" %}
+				{% if request.path == '/comercios/nueva_publicacion/' %}
+					<h2>Nueva Publicación</h2>
+				{% else %}
+					<h2>Editando Publicación</h2>
+				{% endif %}
+				<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+					{{ form.media }}
+					<label>Título:</label>
+					<div class="form-group">
+						{% if form.titulo.errors %}
+							<div class="alert alert-danger">
+								{{ form.titulo.errors }}
+							</div>
+						{% endif %}						
+						{{ form.titulo }}
+						{{ form.titulo.errors }}
+					</div>
+					<label>Contenido:</label>
+					<div class="form-group">
+						{% if form.contenido.errors %}
+							<div class="alert alert-danger">
+								{{ form.contenido.errors }}
+							</div>
+						{% endif %}
+						{{ form.contenido }}
+					</div>
+					<a class="btn" href="{% url 'comerce_app:ListarPublicaciones' %}">Volver</a>
+					<button class="btn" type="submit">Guardar</button>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock cuerpo %}
+{% block pie %}
+	{% include "pie.html" %}
+{% endblock pie %}

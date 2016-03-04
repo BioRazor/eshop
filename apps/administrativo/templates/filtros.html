@@ -1,0 +1,44 @@
+<div class="row">
+	<div class="col-md-12">
+
+		<div class="section section-breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+						  Ver por Áreas de Interés
+						</a>
+						{% if filtro %}							
+							<span class="badge">{{ productos.count }} Productos en {{ area.area_interes }} <a class="btn btn-xs" href="{% url 'principal:home' %}">&times;</a></span>
+						{% endif %}								
+						<div class="collapse" id="collapseExample">
+						  <div class="well">
+						   <table class="tab-pane">
+						   	{% comment %}
+						   		Algoritmo que imprimar una tabla de 10 items cada column
+						   	{% endcomment %}
+							   {% for area in areas %}
+
+								   {% if forloop.counter == 1 or forloop.counter in num %}
+						   				<tr>		   		
+								   	{% endif %}	
+
+									   	<td>
+									   		<p><a href="?area={{ area.id }}">{{ area.area_interes }}</a></p>
+									   	</td>
+						   			</tr>
+
+						   			{% if forloop.counter == 1 or forloop.counter in num %}
+						   				</tr>		   		
+								   	{% endif %}	
+							   {% endfor %}
+						   </table>
+						  </div>
+						</div>
+					</div><!--col-->
+				</div><!--row-->
+			</div><!--Container-->
+		</div><!--section-->
+
+	</div><!--col-->			
+</div> <!--row-->
