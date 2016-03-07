@@ -1,3 +1,4 @@
+#encoding:utf-8
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
 
