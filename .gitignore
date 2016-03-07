@@ -1,0 +1,4 @@
+*Python ByteCode
+
+*.py[co]
+*.pyc
