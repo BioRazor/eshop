@@ -59,7 +59,7 @@ class Comercio_Telefono(models.Model):
 		return ('%s-%s - %s') %(self.prefijo, self.telefono, self.comercio.nombre)
 class Comercio_Opinion(models.Model):
 	comercio = models.ForeignKey(Comercio)
-	cliente = models.ForeignKey('clientes.cliente')
+	cliente = models.ForeignKey('clientes.Cliente')
 
 	opinion = models.TextField(blank=False, max_length= 120)
 	puntaje = models.PositiveSmallIntegerField(default=5)
@@ -107,7 +107,7 @@ class Producto(models.Model):
 
 class Producto_Opinion(models.Model):
 	producto = models.ForeignKey(Producto)
-	cliente = models.ForeignKey('clientes.cliente')
+	cliente = models.ForeignKey('clientes.Cliente')
 
 	opinion = models.TextField(blank=False, max_length= 120)
 	puntaje = models.PositiveSmallIntegerField(default=5)

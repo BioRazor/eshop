@@ -1,3 +1,4 @@
+#encoding:utf-8
 """
 	Plataforma comercial para la Promocion, Publicidad y Ventas de Productos en linea para las empresas del Municipio Juan German Roscio, Estado Guarico.
 	Autor: David Abreu
