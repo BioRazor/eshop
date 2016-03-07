@@ -77,10 +77,10 @@ USE_TZ = True
 
 #Se define la ruta de los archivos estaticos
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (BASE_DIR.child('static'),
-    )
+STATICFILES_DIRS = (BASE_DIR.child('static'),)
 
-STATIC_ROOT = BASE_DIR.child('static')
+#STATIC_ROOT = BASE_DIR.child('static')
+#print (STATIC_ROOT)
 
 AUTH_USER_MODEL = 'administrativo.Usuario'
 
