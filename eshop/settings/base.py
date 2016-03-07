@@ -42,7 +42,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'eshop.urls'
 
 TEMPLATES = [
     {
@@ -60,7 +59,9 @@ TEMPLATES = [
     },
 ]
 
+ROOT_URLCONF = 'eshop.urls'
 WSGI_APPLICATION = 'eshop.wsgi.application'
+
 
 #Se define el idioma del proyecto
 LANGUAGE_CODE = 'es-es'
