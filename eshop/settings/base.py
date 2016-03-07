@@ -77,7 +77,6 @@ USE_TZ = True
 
 #Se define la ruta de los archivos estaticos
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = (BASE_DIR.child('static'),
     )
 
