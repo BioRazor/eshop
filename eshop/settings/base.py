@@ -80,7 +80,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (BASE_DIR.child('static'),
     )
 
-STATIC_ROOT = 'static'
+STATIC_ROOT = 'staticfiles'
 
 AUTH_USER_MODEL = 'administrativo.Usuario'
 
