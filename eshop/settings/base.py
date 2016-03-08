@@ -75,8 +75,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-
 AUTH_USER_MODEL = 'administrativo.Usuario'
 
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
