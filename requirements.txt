@@ -18,3 +18,4 @@ Unipath==1.1
 virtualenv==14.0.3
 virtualenv-clone==0.2.6
 virtualenvwrapper==4.7.1
+whitenoise==2.0.6
