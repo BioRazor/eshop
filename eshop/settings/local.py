@@ -14,19 +14,8 @@ DATABASES = {
     }
 }
 
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'eshopdb',
-        'USER': 'root',
-        'PASSWORD': 'qwerty',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-"""
-
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (BASE_DIR.child('static'),)
 #Se definae la ruta y la carpeta en la que se guardaran los archivos MEDIA
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.child('media')

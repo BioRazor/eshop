@@ -19,6 +19,9 @@ DATABASES = {
     }
 }
 
-#Se definae la ruta y la carpeta en la que se guardaran los archivos MEDIA
+STATIC_URL = '/static/'
+STATIC_ROOT = 'staticfiles'
+STATICFILES_DIRS = (BASE_DIR.child('static'),)
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.child('media')
