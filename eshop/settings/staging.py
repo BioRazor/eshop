@@ -19,8 +19,8 @@ DATABASES = {
     }
 }
 
-STATIC_URL = '/static/'
 STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (BASE_DIR.child('static'),)
 
 MEDIA_URL = '/media/'
