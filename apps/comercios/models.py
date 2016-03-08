@@ -53,7 +53,7 @@ class Comercio_Telefono(models.Model):
 
 		)
 	prefijo = models.CharField(choices=choices, max_length=4)
-	telefono = models.PositiveSmallIntegerField()
+	telefono = models.PositiveIntegerField()
 
 	def __str__(self):
 		return ('%s-%s - %s') %(self.prefijo, self.telefono, self.comercio.nombre)
