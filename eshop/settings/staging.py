@@ -2,8 +2,8 @@
 #Se importan todas las configuraciones del archivo base.py 
 from .base import *
 
-DEBUG = False
-TEMPLATE_DEBUG = False
+DEBUG = True
+TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -20,9 +20,8 @@ DATABASES = {
 }
 
 
-STATIC_ROOT = BASE_DIR.child('staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (BASE_DIR.child('static'),)
+STATIC_ROOT = 'staticfiles'
 
 
 
