@@ -88,7 +88,7 @@ def RegistroComercio(request):
 		datosComercio = RegistroComercioForm(request.POST, request.FILES, prefix='comercio')
 		datosTelefono = ComercioTelefonoForm(request.POST, prefix='telefono')
 		#Se verifica la valides de los formularios
-		if datosComercio.is_valid() and datosUsuario.is_valid():
+		if datosComercio.is_valid() and datosUsuario.is_valid() and datosTelefono.is_valid():
 
 			#Se crea el usuario con los datos recibidos
 			Usuario.objects.create_user(username= datosUsuario.cleaned_data['username'],
