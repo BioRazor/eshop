@@ -20,10 +20,10 @@ DATABASES = {
 }
 
 
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (BASE_DIR.child('static'),)
+STATICFILES_DIRS = (BASE_DIR.child('staticfiles'),)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.child('media')
