@@ -155,7 +155,8 @@ class Producto_Respuesta(models.Model):
 	activo = models.BooleanField(default=True)
 
 class Publicacion(models.Model):
-	comercio = models.ForeignKey(Comercio)
+	comercio = models.ForeignKey(Comercio)	
+	area_interes = models.ManyToManyField('administrativo.area_interes')
 
 	titulo = models.CharField(blank=False, max_length=50)
 	contenido = RichTextField(blank=False)

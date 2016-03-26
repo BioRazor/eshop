@@ -40,6 +40,7 @@ class PublicacionForm(forms.ModelForm):
 		model = Publicacion
 		exclude = ('comercio', 'fecha_pub', 'activo')
 		widgets = {
+			'area_interes' : forms.CheckboxSelectMultiple(),
 			'titulo' : forms.TextInput(attrs={'class' : 'form-control'}),
 			'contenido' : forms.Textarea()
 

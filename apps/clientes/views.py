@@ -234,6 +234,7 @@ class DashBoard(LoginRequiredMixin, TemplateView):
 		#productos y publicaciones de las areas de interes del usuario
 		context['productosAreas'] = Producto.objects.all().filter(area_interes__in=self.request.user.cliente.area_interes.all())
 		context['productoFotosAreas'] = Producto_Fotos.objects.all().filter(producto__in = context['productosAreas'])
+		context['publicacionesAreas'] = Publicacion.objects.all().filter(activo = True, area_interes__in=self.request.user.cliente.area_interes.all())
 
 
 		#compras pendientes del usuario

@@ -9,7 +9,8 @@
 						  Ver por Áreas de Interés
 						</a>
 						{% if filtro %}							
-							<span class="badge">{{ productos.count }} Productos en {{ area.area_interes }} <a class="btn btn-xs" href="{% url 'principal:home' %}">&times;</a></span>
+							<span class="badge">{{ productos.count }} Productos  y {{ publicaciones.count }} Publicaciones en {{ area.area_interes }} <a class="btn btn-xs" href="{% url 'principal:home' %}">&times;</a></span>
+
 						{% endif %}								
 						<div class="collapse" id="collapseExample">
 						  <div class="well">

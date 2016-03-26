@@ -141,10 +141,10 @@
 						<!--tab areas-->
 						<div class="tab-pane" id="areas">
 							<div class="row">
-								<div class="col-md-12">
+								<div class="col-md-6">
 									<h2>Productos</h2>
 									{% for producto in productosAreas %}
-										<div class="col-sm-4">
+										<div class="col-sm-6">
 											<!-- Product -->
 											<div class="shop-item">
 												<!-- Product Image -->
@@ -222,6 +222,31 @@
 										</div><!-- End Col producto -->
 									{% endfor %}
 								</div><!--col-->
+								<div class="col-md-6">
+										<h2>Publicaciones</h2>
+										{% for publicacion in publicacionesAreas %}
+											<div class="col-sm-6">
+												<div class="blog-post">
+													<div class="single-post-title">
+														<h3><a href="{% url 'comerce_app:VerPublicacion' publicacion.id %}">{{ publicacion.titulo }}</a></h3>
+													</div>
+													<div class="single-post-info">
+														<i class="glyphicon glyphicon-time"></i>{{ publicacion.fecha_pub|timesince }} <a href="#" title="Ver Comentarios"><i class="glyphicon glyphicon-comment"></i>{{ publicacion.count_comments }}</a>
+													</div>
+													<div class="post-summary">
+														{{ publicacion.contenido|safe|truncatewords:20 }}
+													</div>
+													<div class="author-photo">
+															<img src="{{ publicacion.comercio.foto_perfil.url }}" alt="Author 1" class="img-thumbnail" height="42" width="42">
+															<a href="{% url 'comerce_app:VerComercio' publicacion.comercio.id %}">{{ publicacion.comercio.nombre|capfirst }}</a>
+														</div>
+													<div class="post-more">
+														<a href="{% url 'comerce_app:VerPublicacion' publicacion.id %}" class="btn btn-small">Leer más</a>
+													</div>
+												</div>
+											</div>
+										{% endfor %}
+									</div>
 							</div><!--row-->
 						</div>
 						<!--tab areas-->

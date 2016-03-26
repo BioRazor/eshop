@@ -44,17 +44,20 @@ class IndexView(TemplateView):
 	def get_context_data(self, **kwargs):
 		context = super(IndexView, self).get_context_data(**kwargs)
 		context['areas'] = Area_Interes.objects.all()
-		context['publicaciones'] = Publicacion.objects.all().filter(activo=True)
 		context['num'] = [11, 21, 31, 41]
 		if 'area' in self.request.GET:
 			area = self.request.GET.get('area', False)
+			context['publicaciones'] = Publicacion.objects.all().filter(activo=True, area_interes = area)
 			context['productos'] = Producto.objects.all().filter(activo=True, area_interes = area)			
 			context['fotos'] = Producto_Fotos.objects.all().filter(producto__in = context['productos'])
 			context['filtro'] = True
 			context['area'] = Area_Interes.objects.get(pk = area)
 			if context['productos'].count() == 0:
 				context['mensaje'] = "Lo sentimos, no hay ningún producto aún en el Área de Interés que seleccionaste."
+			if context['publicaciones'].count() == 0:
+				context['mensaje'] = "Lo sentimos, no hay ninguna publicación aún en el Área de Interés que seleccionaste."
 		else:
+			context['publicaciones'] = Publicacion.objects.all().filter(activo=True)			
 			context['productos'] = Producto.objects.all().filter(activo=True)
 			context['fotos'] = Producto_Fotos.objects.all().filter(producto__in = context['productos'])
 		return context
