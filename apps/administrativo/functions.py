@@ -118,8 +118,8 @@ def enviar_notificacion(modelo, accion, relacionado, destinatario):
 	if modelo.__class__.__name__ is 'Comercio':
 		url = '/comercios/ver_comercio/%s/' %(modelo.id)
 	if modelo.__class__.__name__ is 'Recibo':
-		url = '/comercios/ver_recibo/%s/' %(modelo.id)
-		
+		url = '/ver_recibo/%s/' %(modelo.id)
+
 	Notificacion.objects.create(
 		modelo = modelo.__class__.__name__, 
 		id_modelo = modelo.id, 
