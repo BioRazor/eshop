@@ -102,7 +102,8 @@ def enviar_notificacion(modelo, accion, relacionado, destinatario):
 		descripcion = dicc[accion]%(relacionado.nombre, modelo.nombre)
 	if modelo.__class__.__name__ == 'Comercio':
 		descripcion = dicc[accion]%(relacionado.nombre)
-
+	if modelo.__class__.__name__ == 'Recibo':
+		descripcion = dicc[accion]
 
 	url = None
 
@@ -116,7 +117,9 @@ def enviar_notificacion(modelo, accion, relacionado, destinatario):
 		url = '/clientes/pagar/%s/' %(modelo.id)
 	if modelo.__class__.__name__ is 'Comercio':
 		url = '/comercios/ver_comercio/%s/' %(modelo.id)
-
+	if modelo.__class__.__name__ is 'Recibo':
+		url = '/comercios/ver_recibo/%s/' %(modelo.id)
+		
 	Notificacion.objects.create(
 		modelo = modelo.__class__.__name__, 
 		id_modelo = modelo.id, 

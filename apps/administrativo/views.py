@@ -119,13 +119,13 @@ def RegistroComercio(request):
 			telefonoComercio.save()
 
 			#Se crea el primer recibo para el comercio
-			Recibo.objects.create(comercio = nuevoComercio, fecha_fin = datetime.now() + timedelta(weeks=13), descripcion = "3 Meses que paga la Casa.", precio = 90000, estado = 'pagado')
+			Recibo.objects.create(comercio = nuevoComercio, fecha_fin = datetime.now() + timedelta(weeks=13), descripcion = "3 Meses que paga la Casa.", estado = 'pagado')
 
 			#Se envia la notificacion al comercio del nuevo recibo
 			recibo = Recibo.objects.get(comercio = nuevoComercio)
 			PagoRecibo.objects.create(recibo = recibo, fecha_pago = datetime.now(), nro_referencia= 0000, precio = 90000)
 			enviar_notificacion(recibo, 'registroComercio', nuevoComercio, nuevoComercio )
-
+			print(nuevoComercio)
 
 
 			LogIn(request, datosUsuario.cleaned_data['username'], datosUsuario.cleaned_data['password'])
