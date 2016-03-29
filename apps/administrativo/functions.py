@@ -23,7 +23,7 @@ def get_related_dasboard_url(usuario):
 
 	if cliente:
 		return redirect('client_app:DashBoard')
-	if cliente == None:
+	if comercio:
 		return redirect('comerce_app:DashBoard')
 
 

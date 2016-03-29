@@ -125,10 +125,8 @@ def RegistroComercio(request):
 			recibo = Recibo.objects.get(comercio = nuevoComercio)
 			PagoRecibo.objects.create(recibo = recibo, fecha_pago = datetime.now(), nro_referencia= 0000, precio = 90000)
 			enviar_notificacion(recibo, 'registroComercio', nuevoComercio, nuevoComercio )
-			print(nuevoComercio)
 
-
-			LogIn(request, datosUsuario.cleaned_data['username'], datosUsuario.cleaned_data['password'])
+			return LogIn(request, datosUsuario.cleaned_data['username'], datosUsuario.cleaned_data['password'])
 			#return redirect('/')
 		else:
 			context = {
@@ -170,7 +168,7 @@ def RegistroCliente(request):
 			nuevoCliente.save()
 			#Se guarda la relacion mucho a muchos existente en el formulario (area_interes)
 			datosCliente.save_m2m()
-			LogIn(request, datosUsuario.cleaned_data['username'], datosUsuario.cleaned_data['password'])
+			return LogIn(request, datosUsuario.cleaned_data['username'], datosUsuario.cleaned_data['password'])
 			#return redirect('/')
 		else:
 			context = {
