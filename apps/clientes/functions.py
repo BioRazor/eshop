@@ -10,14 +10,14 @@ def comercios_seguidos(cliente):
 
 def opino(cliente, producto):
 	try:
-		opinion = Producto_Opinion.objects.get(cliente = cliente.id, producto = producto.id)
+		opinion = Producto_Opinion.objects.get(cliente = cliente, producto = producto)
 		return True
 	except:
 		return False
 
 def compro(cliente, producto):
 	try:
-		compra = Compra.objects.get(cliente = cliente.id, producto = producto.id, estado = 'recibido')
+		compra = Compra.objects.get(cliente = cliente, producto = producto, estado = 'recibido')
 		return True
 	except:
 		return False

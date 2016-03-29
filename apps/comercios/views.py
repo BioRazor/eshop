@@ -387,7 +387,7 @@ class VerProducto(DetailView):
 		print(opino(self.request.user.cliente, producto.id))
 		print(compro(self.request.user.cliente, producto.id))
 		try:
-			if  not opino(self.request.user.cliente, producto.id) and compro(self.request.user.cliente, producto.id):
+			if  opino(self.request.user.cliente, producto.id) == False and compro(self.request.user.cliente, producto.id) == True:
 				context['ProductoopinionForm'] = ProductoOpinionForm()
 		except:
 			pass
