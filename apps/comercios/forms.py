@@ -1,7 +1,7 @@
 from django import forms
 
 #Se importan los modelos a utilizar
-from .models import Producto, Producto_Fotos, Publicacion, Publicacion_Comentario, Producto_Pregunta, Producto_Respuesta, Producto_Opinion, Comercio_Opinion
+from .models import Producto, Producto_Fotos, Publicacion, Publicacion_Comentario, Producto_Pregunta, Producto_Respuesta, Producto_Opinion, Comercio_Opinion, Cuenta_Banco
 #Se importa el Widget del editor de texto enriquecido
 from ckeditor.widgets import CKEditorWidget
 
@@ -83,4 +83,13 @@ class ComercioOpinionForm(forms.ModelForm):
 		exclude = ('comercio', 'cliente', 'puntaje')
 		widgets = {
 			'opinion' : forms.Textarea(attrs={'class' : 'form-control', 'rows' : '5', 'cols' : '4', 'required' : 'True'})
+		}
+class ComercioCuentaForm(forms.ModelForm):
+	class Meta:
+		model = Cuenta_Banco
+		fields = ('banco', 'tipo_cuenta', 'nro_cuenta')
+		widgets = {
+			'banco': forms.TextInput(attrs={'class' : 'form-control'}),
+			'tipo_cuenta': forms.Select(attrs={'class' : 'form-control'}),
+			'nro_cuenta': forms.TextInput(attrs={'class' : 'form-control'}),
 		}

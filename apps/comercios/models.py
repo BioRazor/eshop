@@ -9,10 +9,20 @@ def validar_positivo(value):
 	if value <0:
 		raise ValidationError('Debe ingresar un precio mayor o igual a cero')
 
+class Cuenta_Banco(models.Model):
+	banco = models.CharField(blank=False, max_length=50)
+	nro_cuenta = models.CharField(blank=False, max_length=20)
+	cuenta_choices = (
+		('corriente', 'Corriente'),
+		('ahorro', 'Ahorro')
+		)
+	tipo_cuenta = models.CharField(choices=cuenta_choices, max_length=50, default='corriente', blank=False)
+
 class Comercio(models.Model):
 	parroquia = models.ForeignKey('administrativo.parroquia')
 	usuario = models.OneToOneField('administrativo.usuario', blank=True, null=True)
 	area_interes = models.ManyToManyField('administrativo.area_interes')
+	cuenta = models.ManyToManyField(Cuenta_Banco)
 
 	nombre = models.CharField(blank=False, max_length=50)
 	rif = models.CharField(blank=False, max_length=50)
@@ -57,6 +67,7 @@ class Comercio_Telefono(models.Model):
 
 	def __str__(self):
 		return ('%s-%s - %s') %(self.prefijo, self.telefono, self.comercio.nombre)
+
 class Comercio_Opinion(models.Model):
 	comercio = models.ForeignKey(Comercio)
 	cliente = models.ForeignKey('clientes.Cliente')
