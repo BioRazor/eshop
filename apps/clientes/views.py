@@ -83,6 +83,10 @@ def ComprarProducto(request, pk):
 			compra = compraF.save(commit=False)
 			#se crea un objeto de tipo Compra_Envio con los datos recibidos por el formulario			
 			envio = envioF.save(commit=False)
+			print(envio.direccion)
+			if envio.direccion == "":
+				envio.direccion = request.user.cliente.direccion
+
 			#se relaciona la compra con el cliente
 			compra.cliente = request.user.cliente
 			#se relaciona la compra con el comercio

@@ -23,6 +23,7 @@ class CompraEnvioForm(forms.ModelForm):
 			'detalles' : forms.Textarea(attrs={'class' : 'form-control', 'rows' : 3}),
 			'fecha_recepcion' : forms.DateInput(attrs={'type' : 'date'})
 		}
+	
 
 class CompraPagoForm(forms.ModelForm):
 

@@ -39,7 +39,7 @@ class Cliente_Seguir(models.Model):
 class Compra_Envio(models.Model):
 	agencia = models.ForeignKey('administrativo.Agencia')
 
-	direccion = models.TextField(blank=False)
+	direccion = models.TextField(blank=True)
 	detalles = models.TextField(default='Ninguno')
 	fecha_recepcion = models.DateField(blank=True, null=True)
 
