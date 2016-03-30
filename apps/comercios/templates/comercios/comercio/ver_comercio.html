@@ -36,7 +36,7 @@
 						<ul class="no-list-style">
 							<li><b>RIF:</b>{{ comercio.rif }}</li>
 							<li><b>Correo:</b><a href="mailto: {{ comercio.usuario.email }}"> {{ comercio.usuario.email }}</a></li>
-							<li><b>Telefono:</b> 0{{ comercio.get_tlf }}</li>
+							<li><b>Telefono:</b> {{ comercio.get_tlf }}</li>
 							<li><b>Desde:</b> {{ comercio.fecha_reg }} - {{ comercio.fecha_reg|timesince }}</li>
 							<li><b>Direccion:</b></li>
 							<li>

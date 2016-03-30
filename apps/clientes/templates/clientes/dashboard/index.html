@@ -83,9 +83,7 @@
 													</div>
 													<!-- Precio Producto-->
 													<div class="price">
-														<span class="badge"><span class="glyphicon glyphicon-eye-open"></span> {{ producto.visitas }}</span>
-														<span class="badge"><span class="glyphicon glyphicon-star"></span> {{ producto.visitas }}</span>
-														<span class="badge"><span class="glyphicon glyphicon-shopping-cart"></span> {{ producto.visitas }}</span>
+														
 														<br>
 														<!-- <span class="price-was">$959.99</span>--> {{ producto.precio }}Bs.								
 													</div>
@@ -153,7 +151,7 @@
 														Se recorren las foto traidas desde la View, y se muestran las que correspondan al producto
 														en cuestion
 													{% endcomment %}
-													{% for foto in productoFotosSeguidos %}
+													{% for foto in productoFotosAreas %}
 														{% if foto.producto.id == producto.id %}
 															<div id="{{ producto.id }}" class="carousel slide" data-ride="carousel">
 															  <!-- Indicators -->
@@ -199,9 +197,7 @@
 												</div>
 												<!-- Precio Producto-->
 												<div class="price">
-													<span class="badge"><span class="glyphicon glyphicon-eye-open"></span> {{ producto.visitas }}</span>
-													<span class="badge"><span class="glyphicon glyphicon-star"></span> {{ producto.visitas }}</span>
-													<span class="badge"><span class="glyphicon glyphicon-shopping-cart"></span> {{ producto.visitas }}</span>
+													
 													<br>
 													<!-- <span class="price-was">$959.99</span>--> {{ producto.precio }}Bs.								
 												</div>

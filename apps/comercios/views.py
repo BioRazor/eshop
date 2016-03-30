@@ -384,8 +384,6 @@ class VerProducto(DetailView):
 		context['preguntas'] = Producto_Pregunta.objects.all().filter(producto= producto.id)
 		context['respuestas'] = Producto_Respuesta.objects.all().filter(producto = producto.id)
 		context['opiniones'] = Producto_Opinion.objects.all().filter(producto = producto.id)
-		print(opino(self.request.user.cliente, producto.id))
-		print(compro(self.request.user.cliente, producto.id))
 		try:
 			if  opino(self.request.user.cliente, producto.id) == False and compro(self.request.user.cliente, producto.id) == True:
 				context['ProductoopinionForm'] = ProductoOpinionForm()
