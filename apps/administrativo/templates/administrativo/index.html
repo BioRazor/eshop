@@ -19,6 +19,10 @@
 				<div class="col-md-6">
 					<h2>Productos</h2>
 					{% for producto in productos %}
+						{% if forloop.counter == 2 %}
+							<div class="row">
+						{% endif %}
+
 						<div class="col-sm-6">
 							<!-- Product -->
 							<div class="shop-item">
@@ -97,11 +101,18 @@
 							</div>
 							<!-- End Product -->
 						</div><!-- End Col producto -->
+						
+						{% if forloop.counter == 2 %}
+							</div>
+						{% endif %}
 					{% endfor %}
 				</div> <!--end col md 6 -->
 				<div class="col-md-6">
 					<h2>Publicaciones</h2>
 					{% for publicacion in publicaciones %}
+						{% if forloop.counter == 2 %}
+							<div class="row">
+						{% endif %}
 						<div class="col-sm-6">
 							<div class="blog-post">
 								<div class="single-post-title">
@@ -122,6 +133,9 @@
 								</div>
 							</div>
 						</div>
+						{% if forloop.counter == 2 %}
+							</div>
+						{% endif %}
 					{% endfor %}
 				</div>
 			</div>

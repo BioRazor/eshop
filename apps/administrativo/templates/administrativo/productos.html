@@ -12,6 +12,9 @@
 				<div class="row">
 					<div class="col-md-12">
 						{% for producto in productos %}
+						{% if forloop.counter == 3 %}
+							<div class="row">
+						{% endif %}
 						<div class="col-sm-4">
 							<!-- Product -->
 							<div class="shop-item">
@@ -98,6 +101,9 @@
 							</div>
 							<!-- End Product -->
 						</div><!-- End Col producto -->
+						{% if forloop.counter == 3 %}
+							</div>
+						{% endif %}
 					{% endfor %}
 					</div>
 				</div>

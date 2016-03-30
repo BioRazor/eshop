@@ -9,6 +9,10 @@
 			<div class="col-md-12">	
 				<h1>Publicaciones</h1>
 				{% for publicacion in publicaciones %}
+					{% if forloop.counter == 3 %}
+						<div class="row">
+					{% endif %}
+
 					<div class="col-sm-4">
 						<div class="blog-post">
 							<div class="single-post-title">
@@ -36,6 +40,10 @@
 					</div>
 					{% empty %}
 						<h3>No tienes ninguna publicación. ¡Vamos! ¡Crea Una!</h3> <a class="btn" href="{% url 'comerce_app:addPublicacion' %}">Crear Publicación</a>
+						
+						{% if forloop.counter == 3 %}
+							</div>
+						{% endif %}
 				{% endfor %}
 			</div>
 		</div>
