@@ -125,8 +125,8 @@ class VerComercio(DetailView):
 		context['opiniones'] = Comercio_Opinion.objects.all().filter(comercio = comercio.id)
 		try:
 			context['seguido'] = YaSeguido(comercio, self.request.user.cliente)
-			print(context['seguido'])
-			if context['seguido'] and opino_comercio(request.user.cliente, comercio)==False:
+			cliente = self.request.user.cliente
+			if context['seguido'] == True and opino_comercio(cliente, comercio)==False:
 				context['opinionForm'] = ComercioOpinionForm()
 		except:
 			pass

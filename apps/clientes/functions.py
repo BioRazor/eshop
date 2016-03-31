@@ -24,7 +24,7 @@ def compro(cliente, producto):
 
 def opino_comercio(cliente, comercio):
 	try:
-		opinion = Comercio_Opinion.objects.get(cliente = cliente.id, comercio = comercio.id)
+		opinion = Comercio_Opinion.objects.get(cliente = cliente, comercio = comercio)
 		return True
 	except:
 		return False
